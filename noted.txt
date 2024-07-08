@@ -1,0 +1,2 @@
+ClientID = 3252dd8ad8584bec810dc604739aa1d8
+ClientSecret = e94e8a3d-108c-47f1-bfb3-b0503be1d26b
