@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "301015974312",
+    "project_id": "danain-70baa",
+    "storage_bucket": "danain-70baa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301015974312:android:a2e4f52bfc99c4d0ffdd9d",
+        "android_client_info": {
+          "package_name": "com.hoc.flutter_danain"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARRg2mD8wiMj1_3UCz71fJP5WDelA1WNY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
