@@ -84,8 +84,7 @@ class JumlahPendanaan extends StatelessWidget {
                         isScrollControlled: true,
                         backgroundColor: Colors.white,
                         shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.vertical(top: Radius.circular(8))),
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(8))),
                         builder: (context) {
                           return SizedBox(
                             height: MediaQuery.of(context).size.height * 0.7,
@@ -131,8 +130,7 @@ class JumlahPendanaan extends StatelessWidget {
                           text: rupiahFormat(potensiPendanaan),
                         ),
                         const SizedBox(width: 8),
-                        SvgPicture.asset(
-                            'assets/lender/portofolio/alert_fill.svg'),
+                        SvgPicture.asset('assets/lender/portofolio/alert_fill.svg'),
                       ],
                     ),
                   ),
@@ -140,11 +138,10 @@ class JumlahPendanaan extends StatelessWidget {
               ),
               dividerFull4(context),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 100,
+                    width: 120,
                     child: detailDataPendanaanLender(
                       'Bunga Efektif',
                       '${(bungaEfektif * 100).truncateToDouble() / 100} % p.a',
