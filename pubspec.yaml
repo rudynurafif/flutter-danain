@@ -2,7 +2,7 @@ name: flutter_danain
 description: Simple auth app flutter, server node.js, BLoC pattern, RxDart.
 
 publish_to: 'none'
-version: 1.6.52
+version: 1.6.53
 environment:
   sdk: '>=2.18.2 <3.0.0'
   flutter: '>=3.3.3'
