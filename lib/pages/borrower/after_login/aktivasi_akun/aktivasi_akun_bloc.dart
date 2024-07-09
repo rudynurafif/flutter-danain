@@ -19,7 +19,9 @@ class AktivasiAkunBloc extends DisposeCallbackBaseBloc {
   final Stream<List<dynamic>> kotaList;
   final Stream<List<dynamic>> bankList;
   final Stream<List<dynamic>> jabatanList;
+  final Stream<List<dynamic>> hubunganList;
 
+  //step 1
   final BehaviorSubject<Map<String, dynamic>?> sumberDana;
   final BehaviorSubject<Map<String, dynamic>?> jenisKerja;
   final BehaviorSubject<Map<String, dynamic>?> jabatan;
@@ -34,11 +36,20 @@ class AktivasiAkunBloc extends DisposeCallbackBaseBloc {
   final BehaviorSubject<int?> biayaHidup;
   final Stream<bool> buttonStep1;
 
-  //step 2
+  // step 2
+  final BehaviorSubject<String?> namaLengkapKontakDarurat;
+  final BehaviorSubject<Map<String, dynamic>?> hubunganKontakDarurat;
+  final BehaviorSubject<String?> noHandphoneKontakDarurat;
+  final BehaviorSubject<String?> namaLengkapPasangan;
+  final BehaviorSubject<String?> noKtpPasangan;
+  final BehaviorSubject<String?> noHandphonePasangan;
+  final Stream<bool> buttonStep2;
+
+  //step 3
   final BehaviorSubject<Map<String, dynamic>?> namaBank;
   final BehaviorSubject<String?> noRekening;
   final BehaviorSubject<String?> kotaBank;
-  final Stream<bool> buttonStep2;
+  final Stream<bool> buttonStep3;
 
   final Function0<void> getBankData;
   final Stream<Map<String, dynamic>?> infoBank;
@@ -59,6 +70,7 @@ class AktivasiAkunBloc extends DisposeCallbackBaseBloc {
     required this.jenisKerja,
     required this.jabatan,
     required this.jabatanList,
+    required this.hubunganList,
     required this.bidangUsaha,
     required this.namaPerusahaan,
     required this.alamatPerusahaan,
@@ -68,12 +80,19 @@ class AktivasiAkunBloc extends DisposeCallbackBaseBloc {
     required this.lamaKerja,
     required this.penghasilan,
     required this.biayaHidup,
+    required this.namaLengkapKontakDarurat,
+    required this.hubunganKontakDarurat,
+    required this.noHandphoneKontakDarurat,
+    required this.namaLengkapPasangan,
+    required this.noKtpPasangan,
+    required this.noHandphonePasangan,
     required this.namaBank,
     required this.noRekening,
     required this.getKota,
     required this.kotaBank,
     required this.buttonStep1,
     required this.buttonStep2,
+    required this.buttonStep3,
     required this.isLoading,
     required this.errorMessage,
     required this.getBankData,
@@ -97,6 +116,7 @@ class AktivasiAkunBloc extends DisposeCallbackBaseBloc {
     final provinsiList = BehaviorSubject<List<dynamic>>();
     final kotaList = BehaviorSubject<List<dynamic>>();
     final bankList = BehaviorSubject<List<dynamic>>();
+    final hubunganList = BehaviorSubject<List<dynamic>>();
     final messageError = BehaviorSubject<String?>();
 
     final sumberDana = BehaviorSubject<Map<String, dynamic>?>();
@@ -141,11 +161,7 @@ class AktivasiAkunBloc extends DisposeCallbackBaseBloc {
           penghasilan.stream,
           biayaHidup.stream,
           (a, b, c, d) {
-            return a != null &&
-                a.length == 5 &&
-                b != null &&
-                c != null &&
-                d != null;
+            return a != null && a.length == 5 && b != null && c != null && d != null;
           },
         ),
         (bool a, bool b, bool c) {
@@ -155,12 +171,22 @@ class AktivasiAkunBloc extends DisposeCallbackBaseBloc {
     );
 
     //step 2
+
+    final namaLengkapKontakDarurat = BehaviorSubject<String?>();
+    final hubunganKontakDarurat = BehaviorSubject<Map<String, dynamic>?>();
+    final noHandphoneKontakDarurat = BehaviorSubject<String?>();
+    final namaLengkapPasangan = BehaviorSubject<String?>();
+    final noKtpPasangan = BehaviorSubject<String?>();
+    final noHandphonePasangan = BehaviorSubject<String?>();
+    final buttonStep2 = BehaviorSubject<bool>.seeded(false);
+
+    //step 3
     final namaBank = BehaviorSubject<Map<String, dynamic>?>();
     final noRekening = BehaviorSubject<String?>();
     final kotaBank = BehaviorSubject<String?>();
     final infoBank = BehaviorSubject<Map<String, dynamic>?>();
-    final buttonStep2 = BehaviorSubject<bool>.seeded(false);
-    buttonStep2.addStream(
+    final buttonStep3 = BehaviorSubject<bool>.seeded(false);
+    buttonStep3.addStream(
       Rx.combineLatest3(
         namaBank.stream,
         noRekening.stream,
@@ -410,6 +436,7 @@ class AktivasiAkunBloc extends DisposeCallbackBaseBloc {
       kotaList: kotaList.stream,
       jabatanList: jabatanList.stream,
       bankList: bankList.stream,
+      hubunganList: hubunganList.stream,
       sumberDana: sumberDana,
       jenisKerja: jenisKerja,
       jabatan: jabatan,
@@ -422,6 +449,12 @@ class AktivasiAkunBloc extends DisposeCallbackBaseBloc {
       lamaKerja: lamaKerja,
       penghasilan: penghasilan,
       biayaHidup: biayaHidup,
+      namaLengkapKontakDarurat: namaLengkapKontakDarurat,
+      hubunganKontakDarurat: hubunganKontakDarurat,
+      noHandphoneKontakDarurat: noHandphoneKontakDarurat,
+      namaLengkapPasangan: namaLengkapPasangan,
+      noKtpPasangan: noKtpPasangan,
+      noHandphonePasangan: noHandphonePasangan,
       namaBank: namaBank,
       noRekening: noRekening,
       kotaBank: kotaBank,
@@ -431,6 +464,7 @@ class AktivasiAkunBloc extends DisposeCallbackBaseBloc {
       isLoading: isLoading.stream,
       buttonStep1: buttonStep1.stream,
       buttonStep2: buttonStep2.stream,
+      buttonStep3: buttonStep3.stream,
       getBankData: getBankData,
       infoBank: infoBank.stream,
       isPostDone: isPostDone.stream,

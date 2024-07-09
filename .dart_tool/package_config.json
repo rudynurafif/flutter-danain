@@ -69,7 +69,7 @@
     },
     {
       "name": "bottom_picker",
-      "rootUri": "file:///C:/Users/Pongo/AppData/Local/Pub/Cache/hosted/pub.dev/bottom_picker-2.7.0",
+      "rootUri": "file:///C:/Users/Pongo/AppData/Local/Pub/Cache/hosted/pub.dev/bottom_picker-2.8.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -447,7 +447,7 @@
     },
     {
       "name": "firebase_core_platform_interface",
-      "rootUri": "file:///C:/Users/Pongo/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_core_platform_interface-5.0.0",
+      "rootUri": "file:///C:/Users/Pongo/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_core_platform_interface-5.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -537,7 +537,7 @@
     },
     {
       "name": "flutter_bloc",
-      "rootUri": "file:///C:/Users/Pongo/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_bloc-8.1.5",
+      "rootUri": "file:///C:/Users/Pongo/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_bloc-8.1.6",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -957,7 +957,7 @@
     },
     {
       "name": "onesignal_flutter",
-      "rootUri": "file:///C:/Users/Pongo/AppData/Local/Pub/Cache/hosted/pub.dev/onesignal_flutter-5.2.0",
+      "rootUri": "file:///C:/Users/Pongo/AppData/Local/Pub/Cache/hosted/pub.dev/onesignal_flutter-5.2.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -1047,7 +1047,7 @@
     },
     {
       "name": "permission_handler_android",
-      "rootUri": "file:///C:/Users/Pongo/AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_android-12.0.6",
+      "rootUri": "file:///C:/Users/Pongo/AppData/Local/Pub/Cache/hosted/pub.dev/permission_handler_android-12.0.7",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     },
@@ -1089,9 +1089,9 @@
     },
     {
       "name": "platform",
-      "rootUri": "file:///C:/Users/Pongo/AppData/Local/Pub/Cache/hosted/pub.dev/platform-3.1.4",
+      "rootUri": "file:///C:/Users/Pongo/AppData/Local/Pub/Cache/hosted/pub.dev/platform-3.1.5",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.2"
     },
     {
       "name": "platform_device_id",
@@ -1568,7 +1568,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2024-07-08T06:45:30.037110Z",
+  "generated": "2024-07-09T11:30:05.683599Z",
   "generator": "pub",
   "generatorVersion": "3.2.6"
 }

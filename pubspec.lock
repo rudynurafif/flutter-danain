@@ -181,10 +181,10 @@ packages:
     dependency: transitive
     description:
       name: camera_android
-      sha256: "3af7f0b55f184d392d2eec238aaa30552ebeef2915e5e094f5488bf50d6d7ca2"
+      sha256: b350ac087f111467e705b2b76cc1322f7f5bdc122aa83b4b243b0872f390d229
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.9+3"
+    version: "0.10.9+2"
   camera_avfoundation:
     dependency: transitive
     description:
@@ -858,10 +858,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_native_splash
-      sha256: edf39bcf4d74aca1eb2c1e43c3e445fd9f494013df7f0da752fefe72020eedc0
+      sha256: "558f10070f03ee71f850a78f7136ab239a67636a294a44a06b6b7345178edb1e"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.0"
+    version: "2.3.10"
   flutter_otp_text_field:
     dependency: "direct main"
     description:
@@ -1332,10 +1332,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: "9c96da072b421e98183f9ea7464898428e764bc0ce5567f27ec8693442e72514"
+      sha256: a248d8146ee5983446bf03ed5ea8f6533129a12b11f12057ad1b4a67a2b3b41d
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.5"
+    version: "2.2.4"
   path_provider_foundation:
     dependency: transitive
     description:
