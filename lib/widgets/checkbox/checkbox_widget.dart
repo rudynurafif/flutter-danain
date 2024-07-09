@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_danain/data/constants.dart';
+import 'package:flutter_danain/widgets/space_h.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 Widget checkBoxBorrower(bool isSelected, Widget content) {
@@ -58,6 +59,34 @@ Widget checkBoxLender(bool isSelected, Widget content) {
       Flexible(child: content),
     ],
   );
+}
+
+class CheckBoxBorrower extends StatelessWidget {
+  final bool isCheck;
+  final Widget title;
+  final VoidCallback onTap;
+  const CheckBoxBorrower({
+    super.key,
+    required this.isCheck,
+    required this.title,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          checkOrNotBorrower(isCheck),
+          const SpacerH(),
+          Flexible(child: title),
+        ],
+      ),
+    );
+  }
 }
 
 Widget checkOrNotLender(bool isSelected) {

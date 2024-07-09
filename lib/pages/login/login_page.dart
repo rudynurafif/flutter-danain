@@ -282,10 +282,6 @@ class _MyLoginPageState extends State<LoginPage>
       }
       return;
     }
-    if (message is InvalidInformationMessage) {
-      context.showSnackBarError('Invalid information');
-      return;
-    }
   }
 
   Widget emailTextField(LoginBloc loginBloc) {

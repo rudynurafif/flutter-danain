@@ -21,10 +21,7 @@ class _StartPageState extends State<StartPage> {
 
   @override
   void initState() {
-    rxPrefs.remove('step_sementara');
-    rxPrefs.remove('token_sementara');
-    rxPrefs.remove('email_sementara');
-    rxPrefs.setBool('first_lunch', true);
+    rxPrefs.clear();
     super.initState();
   }
 

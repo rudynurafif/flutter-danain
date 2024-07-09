@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_danain/pages/borrower/menu/help/help_page.dart';
+import 'package:flutter_danain/pages/borrower/new_register/new_register_page.dart';
 import 'package:flutter_danain/pages/borrower/register/register_page.dart';
 import 'package:flutter_danain/pages/borrower/registerNew/registerNew_Page.dart';
 import 'package:flutter_danain/pages/help_temp/help_temp.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/constants.dart';
+
 Widget faqAndChat(BuildContext context) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -16,7 +18,7 @@ Widget faqAndChat(BuildContext context) {
         Button1(
           btntext: registerText,
           action: () {
-            Navigator.pushNamed(context, RegisterIndex.routeName);
+            Navigator.pushNamed(context, NewRegisterBorrowerPage.routeName);
           },
         ),
         const SizedBox(height: 16),
@@ -93,4 +95,3 @@ Widget faqAndChat(BuildContext context) {
     ),
   );
 }
-

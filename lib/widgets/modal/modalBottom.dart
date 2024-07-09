@@ -54,11 +54,13 @@ class ModaLBottomTemplate extends StatelessWidget {
   final double padding;
   final Widget child;
   final bool isUseMark;
+  final CrossAxisAlignment alignment;
   const ModaLBottomTemplate({
     super.key,
     this.padding = 16,
     required this.child,
     this.isUseMark = true,
+    this.alignment = CrossAxisAlignment.start,
   });
 
   @override
@@ -74,7 +76,7 @@ class ModaLBottomTemplate extends StatelessWidget {
       padding: EdgeInsets.all(padding),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: alignment,
         mainAxisSize: MainAxisSize.min,
         children: [
           if (isUseMark)

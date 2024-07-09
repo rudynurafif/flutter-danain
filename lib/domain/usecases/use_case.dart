@@ -31,3 +31,4 @@ export 'reset_password_use_case.dart';
 export 'get_info_bank_use_case.dart';
 export 'post_data_pendukung_use_case.dart';
 export 'api_use_case.dart';
+export 'register_borrower_use_case.dart';

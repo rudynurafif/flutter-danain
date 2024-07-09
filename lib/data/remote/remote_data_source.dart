@@ -19,6 +19,9 @@ abstract class RemoteDataSource {
     String email,
     String password,
   );
+  Single<TokenResponse> registerBorrower(
+    Map<String,dynamic> payload
+  );
 
   Single<TokenResponse> changePassword(
     String email,
@@ -253,7 +256,7 @@ abstract class RemoteDataSource {
     required Map<String, String> moreHeader,
     required bool isUseToken,
     required serviceBackend service,
-    required String token,
+    required String? token,
   });
   Future<Either<String, GeneralResponse>> postRequest({
     required String url,
@@ -261,21 +264,21 @@ abstract class RemoteDataSource {
     required Map<String, String> moreHeader,
     required bool isUseToken,
     required serviceBackend service,
-    required String token,
+    required String? token,
   });
   Future<Either<String, GeneralResponse>> postRequestV2({
     required String url,
     required Map<String, dynamic> body,
     required Map<String, String> moreHeader,
     required bool isUseToken,
-    required String token,
+    required String? token,
   });
   Future<Either<String, GeneralResponse>> getRequestV2({
     required String url,
     required Map<String, dynamic> queryParam,
     required Map<String, String> moreHeader,
     required bool isUseToken,
-    required String token,
+    required String? token,
   });
   Future<Either<String, GeneralResponse>> postFormData({
     required String url,
@@ -284,7 +287,7 @@ abstract class RemoteDataSource {
     required Map<String, String> moreHeader,
     required bool isUseToken,
     required serviceBackend service,
-    required String token,
+    required String? token,
   });
 
   Future<Either<String, dynamic>> getDokumen({
@@ -293,7 +296,7 @@ abstract class RemoteDataSource {
     required Map<String, String> moreHeader,
     required bool isUseToken,
     required serviceBackend service,
-    required String token,
+    required String? token,
   });
   Future<Either<String, dynamic>> postRequestDokumen({
     required String url,
@@ -301,6 +304,6 @@ abstract class RemoteDataSource {
     required Map<String, String> moreHeader,
     required bool isUseToken,
     required serviceBackend service,
-    required String token,
+    required String? token,
   });
 }

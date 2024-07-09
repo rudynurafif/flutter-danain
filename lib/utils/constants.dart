@@ -57,6 +57,16 @@ class Constants {
       'namaWilayah': '10 D Kp.Rambutan rumah pa azzam',
     },
   ];
+  List<dynamic> kotaList = [
+    {
+      'idKota': 1,
+      'namaKota': '7F KP.Rambutan rumah pa azzam',
+    },
+    {
+      'idKota': 2,
+      'namaKota': '10 D Kp.Rambutan rumah pa azzam',
+    },
+  ];
   List<dynamic> anList = [
     {
       'idAn': 1,

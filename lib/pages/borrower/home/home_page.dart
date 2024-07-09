@@ -1,3 +1,4 @@
+import 'package:did_change_dependencies/did_change_dependencies.dart';
 import 'package:disposebag/disposebag.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_danain/domain/models/app_error.dart';
 import 'package:flutter_danain/pages/borrower/home/home_bloc.dart';
 import 'package:flutter_danain/pages/borrower/home/home_state.dart';
+import 'package:flutter_danain/pages/borrower/verifikasi_email/verif_email_page.dart';
 import 'package:flutter_danain/pages/login/login_page.dart';
 import 'package:flutter_danain/utils/utils.dart';
 import 'package:flutter_disposebag/flutter_disposebag.dart';
@@ -25,7 +27,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin<HomePage>, DisposeBagMixin {
+    with
+        SingleTickerProviderStateMixin<HomePage>,
+        DisposeBagMixin,
+        DidChangeDependenciesStream {
   final rxPrefs = RxSharedPreferences(
     SharedPreferences.getInstance(),
     kReleaseMode ? null : const RxSharedPreferencesDefaultLogger(),
@@ -61,6 +66,11 @@ class _HomePageState extends State<HomePage>
 
     homeBloc.setBeranda();
     super.initState();
+    didChangeDependencies$
+        .exhaustMap((_) => context.bloc<HomeBloc>().messageAktivasi)
+        .exhaustMap(aktivasiMessage)
+        .collect()
+        .disposedBy(bag);
   }
 
   @override
@@ -95,6 +105,21 @@ class _HomePageState extends State<HomePage>
         return;
       }
       return;
+    }
+  }
+
+  Stream<void> aktivasiMessage(AktivasiMessage? message) async* {
+    debugPrint('[DEBUG] homeBloc message=$message');
+
+    if (message is AktivasiEmailVerif) {
+      await Navigator.pushNamedAndRemoveUntil(
+        context,
+        VerifikasiEmailPage.routeName,
+        arguments: VerifikasiEmailPage(
+          email: message.email,
+        ),
+        (route) => false,
+      );
     }
   }
 }

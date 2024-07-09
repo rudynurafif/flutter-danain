@@ -3,6 +3,8 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class HomeMessage {}
 
+abstract class AktivasiMessage {}
+
 abstract class LogoutMessage implements HomeMessage {}
 
 abstract class FdcMessage implements HomeMessage {}
@@ -39,6 +41,26 @@ class FdcErrorMessage implements FdcMessage {
   @override
   String toString() => 'FdcErrorMessage{message: $message, error: $error}';
 }
+
+class AktivasiSuccess implements AktivasiMessage {
+  const AktivasiSuccess();
+}
+
+class AktivasiEmailVerif implements AktivasiMessage {
+  final String email;
+
+  const AktivasiEmailVerif(
+    this.email,
+  );
+
+  @override
+  String toString() => 'Aktivasi{message=$email}';
+}
+
+class InvalidInformationMessage implements AktivasiMessage {
+  const InvalidInformationMessage();
+}
+
 
 ///
 ///
