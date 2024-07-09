@@ -9,4 +9,5 @@ enum serviceBackend {
   auth,
   authLender,
   dokumen,
+  email,
 }

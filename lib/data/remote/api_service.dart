@@ -4667,6 +4667,21 @@ class ApiService implements RemoteDataSource {
         'timestamps': timestamp,
       };
     }
+    if (service == serviceBackend.email) {
+      signature = Signature().getSignature(
+        dotenv.env['API_KEY_EMAIL'].toString(),
+        payload,
+      );
+      basicAuth = Signature().getBasicAuth(
+        dotenv.env['UNAMEEMAIL'].toString(),
+        dotenv.env['PWEMAIL'].toString(),
+      );
+      header = {
+        'api-key': dotenv.env['API_KEY_EMAIL'].toString(),
+        'x-SIGNATURE-key': signature,
+        'timestamps': timestamp,
+      };
+    }
 
     if (isUseToken) {
       header['Authorization'] = 'Bearer $token';
@@ -4864,6 +4879,21 @@ class ApiService implements RemoteDataSource {
         'timestamps': timestamp,
       };
     }
+    if (service == serviceBackend.email) {
+      signature = Signature().getSignature(
+        dotenv.env['API_KEY_EMAIL'].toString(),
+        payload,
+      );
+      basicAuth = Signature().getBasicAuth(
+        dotenv.env['UNAMEEMAIL'].toString(),
+        dotenv.env['PWEMAIL'].toString(),
+      );
+      header = {
+        'api-key': dotenv.env['API_KEY_EMAIL'].toString(),
+        'x-SIGNATURE-key': signature,
+        'timestamps': timestamp,
+      };
+    }
 
     if (isUseToken) {
       header['Authorization'] = 'Bearer $token';
@@ -5024,6 +5054,22 @@ class ApiService implements RemoteDataSource {
       };
     }
 
+    if (service == serviceBackend.email) {
+      signature = Signature().getSignature(
+        dotenv.env['API_KEY_EMAIL'].toString(),
+        payload,
+      );
+      basicAuth = Signature().getBasicAuth(
+        dotenv.env['UNAMEEMAIL'].toString(),
+        dotenv.env['PWEMAIL'].toString(),
+      );
+      header = {
+        'api-key': dotenv.env['API_KEY_EMAIL'].toString(),
+        'x-SIGNATURE-key': signature,
+        'timestamps': timestamp,
+      };
+    }
+
     if (isUseToken) {
       header['Authorization'] = 'Bearer $token';
     } else {
@@ -5124,6 +5170,21 @@ class ApiService implements RemoteDataSource {
       );
       header = {
         'api-key': dotenv.env['API_KEY_DOKUMEN'].toString(),
+        'x-SIGNATURE-key': signature,
+        'timestamps': timestamp,
+      };
+    }
+    if (service == serviceBackend.email) {
+      signature = Signature().getSignature(
+        dotenv.env['API_KEY_EMAIL'].toString(),
+        payload,
+      );
+      basicAuth = Signature().getBasicAuth(
+        dotenv.env['UNAMEEMAIL'].toString(),
+        dotenv.env['PWEMAIL'].toString(),
+      );
+      header = {
+        'api-key': dotenv.env['API_KEY_EMAIL'].toString(),
         'x-SIGNATURE-key': signature,
         'timestamps': timestamp,
       };

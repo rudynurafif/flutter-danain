@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
+import 'package:flutter_danain/data/api/api_service_helper.dart';
 import 'package:flutter_danain/domain/models/app_error.dart';
 import 'package:flutter_danain/domain/usecases/api_use_case.dart';
 
@@ -25,10 +26,9 @@ class VerifEmailBloc extends DisposeCallbackBaseBloc {
       emailController.add(email);
       try {
         final response = await postRequest.call(
-          url: 'api/beeborroweruser/v1/user/email',
-          body: {
-            'email': email,
-          },
+          url: 'api/beedanainemail/v1/sendgrid/send-email',
+          body: {},
+          service: serviceBackend.email,
         );
         response.fold(
           ifLeft: (left) {
