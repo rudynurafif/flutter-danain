@@ -7,6 +7,7 @@ import 'package:flutter_danain/layout/footer_Lisence.dart';
 import 'package:flutter_danain/pages/borrower/auxpage/introduction_product_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_danain/widgets/widget_element.dart';
+import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 
 class ChoosePreference extends StatefulWidget {
   static const routeName = '/choose_preference_page';
@@ -21,6 +22,14 @@ class _ChoosePreferenceState extends State<ChoosePreference> {
 
   Color? gadai = null;
   Color? cicil = null;
+  @override
+  void initState() {
+    super.initState();
+    final rxPrefs = RxSharedPreferences.getInstance();
+    rxPrefs.clear();
+    print('masuk bang');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,14 +97,14 @@ class _ChoosePreferenceState extends State<ChoosePreference> {
                 action: _currentIndex == null
                     ? null
                     : () {
-                        // print(_currentIndex);
-                        Navigator.pushNamed(
-                          context,
-                          IntroductionProduct.routeName,
-                          arguments: IntroductionProduct(
-                            content: _currentIndex.toString(),
-                          ),
-                        );
+                        print(_currentIndex);
+                        // Navigator.pushNamed(
+                        //   context,
+                        //   IntroductionProduct.routeName,
+                        //   arguments: IntroductionProduct(
+                        //     content: _currentIndex.toString(),
+                        //   ),
+                        // );
                       },
               )
             ],

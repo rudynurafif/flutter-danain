@@ -10,11 +10,7 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_danain/data/remote/api_service.dart';
 import 'package:flutter_danain/domain/models/app_error.dart';
 import 'package:flutter_danain/domain/models/auth_state.dart';
-import 'package:flutter_danain/domain/usecases/check_pin_use_case.dart';
-import 'package:flutter_danain/domain/usecases/get_auth_state_stream_use_case.dart';
-import 'package:flutter_danain/domain/usecases/get_beranda_use_case.dart';
 import 'package:flutter_danain/domain/usecases/get_riwayat_transaksi_v3.dart';
-import 'package:flutter_danain/domain/usecases/logout_use_case.dart';
 import 'package:flutter_danain/domain/usecases/post_konfirmasi_penyerahan_pinjaman.dart';
 import 'package:flutter_danain/domain/usecases/use_case.dart';
 import 'package:flutter_danain/pages/borrower/home/home_state.dart';
@@ -107,6 +103,7 @@ class HomeBloc extends DisposeCallbackBaseBloc {
   final BehaviorSubject<int> totalResponsetransaksi;
   final Function0<void> getBeranda;
   final Stream<Map<String, dynamic>?> berandaData;
+  final Stream<AktivasiMessage?> messageAktivasi;
   HomeBloc._({
     required this.changeAvatar,
     required this.message$,
@@ -165,6 +162,7 @@ class HomeBloc extends DisposeCallbackBaseBloc {
     required this.infiniteRiwayat,
     required this.getBeranda,
     required this.berandaData,
+    required this.messageAktivasi,
   }) : super(dispose);
 
   factory HomeBloc(
@@ -190,6 +188,8 @@ class HomeBloc extends DisposeCallbackBaseBloc {
     final totalResponseTransaksiController = BehaviorSubject<int>();
     final berandaController = BehaviorSubject<Map<String, dynamic>?>();
     final errorMessage = BehaviorSubject<String?>();
+    final messageAktivasi = BehaviorSubject<AktivasiMessage?>();
+
     final authenticationState$ = getAuthState();
     Future<String> getToken() async {
       final event = await authenticationState$.first;
@@ -210,7 +210,12 @@ class HomeBloc extends DisposeCallbackBaseBloc {
             errorMessage.add(error);
           },
           ifRight: (value) {
-            berandaController.add(value.data);
+            final Map<String, dynamic> data = value.data;
+            if (data['status']['verifikasi'] == false) {
+              messageAktivasi.add(AktivasiEmailVerif(data['email']));
+            } else {
+              berandaController.add(value.data);
+            }
           },
         );
       } catch (e) {
@@ -711,6 +716,7 @@ class HomeBloc extends DisposeCallbackBaseBloc {
       totalResponsetransaksi: totalResponseTransaksiController,
       berandaData: berandaController.stream,
       getBeranda: getBerandaFunction,
+      messageAktivasi: messageAktivasi.stream,
     );
   }
 

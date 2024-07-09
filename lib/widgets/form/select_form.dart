@@ -10,7 +10,7 @@ class TextFormSelectSearch extends StatefulWidget {
   final Map<String, dynamic>? dataSelected;
   final List<dynamic> listData;
   final String placeHolder;
-  final String label;
+  final String? label;
   final String idDisplay;
   final String textDisplay;
   final String? modalTitle;
@@ -21,7 +21,7 @@ class TextFormSelectSearch extends StatefulWidget {
     this.dataSelected,
     required this.textDisplay,
     required this.placeHolder,
-    required this.label,
+    this.label,
     required this.idDisplay,
     required this.listData,
     required this.searchPlaceholder,
@@ -43,13 +43,18 @@ class _TextFormSelectSearchState extends State<TextFormSelectSearch> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextWidget(
-          text: widget.label,
-          fontSize: 11,
-          fontWeight: FontWeight.w400,
-          color: HexColor('#AAAAAA'),
-        ),
-        const SpacerV(value: 4),
+        if (widget.label != null)
+          Column(
+            children: [
+              TextWidget(
+                text: widget.label!,
+                fontSize: 11,
+                fontWeight: FontWeight.w400,
+                color: HexColor('#AAAAAA'),
+              ),
+              const SpacerV(value: 4),
+            ],
+          ),
         GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
@@ -262,7 +267,7 @@ class _DropdownSearchState extends State<DropdownSearch> {
                               ),
                             ),
                             child: TextWidget(
-                              text: e[widget.displayKey],
+                              text: e[widget.displayKey].toString(),
                               fontSize: 14,
                               fontWeight:
                                   isSelect ? FontWeight.w500 : FontWeight.w400,

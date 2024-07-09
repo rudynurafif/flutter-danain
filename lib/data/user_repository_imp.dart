@@ -108,6 +108,50 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
+  UnitResultSingle registerBorrower({
+    required Map<String, dynamic> payload,
+  }) {
+    return _remoteDataSource
+        .registerBorrower(payload)
+        .toEitherSingle(_Mappers.errorToAppError)
+        .flatMapEitherSingle((result) {
+          final token = result.token!;
+          final refreshToken = result.refreshToken!;
+          const String lastPage = "kosong";
+          return _remoteDataSource
+              .getBerandaProfile(token, lastPage)
+              .toEitherSingle(_Mappers.errorToAppError)
+              .flatMapEitherSingle((beranda) {
+            final tokenBeranda = beranda.token!;
+            return _remoteDataSource
+                .getUserProfile(token)
+                .map(
+                  (user) => Tuple4(
+                    user,
+                    token,
+                    refreshToken,
+                    tokenBeranda,
+                  ),
+                )
+                .toEitherSingle(_Mappers.errorToAppError);
+          });
+        })
+        .flatMapEitherSingle(
+          (tuple) => _localDataSource
+              .saveUserAndToken(
+                _Mappers.userResponseToUserAndTokenEntity(
+                  tuple.item1,
+                  tuple.item2,
+                  tuple.item3,
+                  tuple.item4,
+                ),
+              )
+              .toEitherSingle(_Mappers.errorToAppError),
+        )
+        .asUnit();
+  }
+
+  @override
   UnitResultSingle refreshToken() {
     return _userAndToken.flatMapEitherSingle((value) {
       if (value == null) {
@@ -942,7 +986,7 @@ class UserRepositoryImpl implements UserRepository {
       moreHeader: moreHeader,
       isUseToken: isUseToken,
       service: service,
-      token: user.orNull()!.token.toString(),
+      token: user.orNull()?.token.toString(),
     );
   }
 
@@ -961,7 +1005,7 @@ class UserRepositoryImpl implements UserRepository {
       moreHeader: moreHeader,
       isUseToken: isUseToken,
       service: service,
-      token: user.orNull()!.token.toString(),
+      token: user.orNull()?.token.toString(),
     );
   }
 
@@ -978,9 +1022,10 @@ class UserRepositoryImpl implements UserRepository {
       body: body,
       moreHeader: moreHeader,
       isUseToken: isUseToken,
-      token: user.orNull()!.token.toString(),
+      token: user.orNull()?.token.toString(),
     );
   }
+
   @override
   Future<Either<String, GeneralResponse>> getRequestV2({
     required String url,
@@ -994,7 +1039,7 @@ class UserRepositoryImpl implements UserRepository {
       queryParam: queryParam,
       moreHeader: moreHeader,
       isUseToken: isUseToken,
-      token: user.orNull()!.token.toString(),
+      token: user.orNull()?.token.toString(),
     );
   }
 
@@ -1015,7 +1060,7 @@ class UserRepositoryImpl implements UserRepository {
       queryParam: queryParam,
       isUseToken: isUseToken,
       service: service,
-      token: user.orNull()!.token.toString(),
+      token: user.orNull()?.token.toString(),
     );
   }
 
@@ -1034,7 +1079,7 @@ class UserRepositoryImpl implements UserRepository {
       queryParam: queryParam,
       isUseToken: isUseToken,
       service: service,
-      token: user.orNull()!.token.toString(),
+      token: user.orNull()?.token.toString(),
     );
   }
 
@@ -1053,7 +1098,7 @@ class UserRepositoryImpl implements UserRepository {
       moreHeader: moreHeader,
       isUseToken: isUseToken,
       service: service,
-      token: user.orNull()!.token.toString(),
+      token: user.orNull()?.token.toString(),
     );
   }
 }

@@ -11,7 +11,6 @@ import 'package:flutter_bloc_pattern/flutter_bloc_pattern.dart';
 import 'package:flutter_danain/data/constants.dart';
 import 'package:flutter_danain/data/remote/api_service.dart';
 import 'package:flutter_danain/domain/models/app_error.dart';
-import 'package:flutter_danain/domain/models/auth_state.dart';
 import 'package:flutter_danain/domain/models/user.dart';
 import 'package:flutter_danain/layout/appBar_previousTitleCustom.dart';
 import 'package:flutter_danain/layout/footer_Lisence.dart';
@@ -61,7 +60,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin>
     SharedPreferences.getInstance(),
     kReleaseMode ? null : const RxSharedPreferencesDefaultLogger(),
   );
-  Map<String, dynamic> dataHome = {};
+  // Map<String, dynamic> dataHome = {};
 
   int currentIndex = 0;
   bool isRefresh = false;
@@ -78,6 +77,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin>
   void initState() {
     super.initState();
     widget.homeBloc.setBeranda();
+    widget.homeBloc.getBeranda();
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => ShowCaseWidget.of(context).startShowCase([_one, _two, _three]));
     didChangeDependencies$
@@ -102,17 +102,11 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin>
     final homeBloc = widget.homeBloc;
     // homeBloc.setBeranda;
     print('check home check');
-    return StreamBuilder<Result<AuthenticationState>?>(
-      stream: homeBloc.authState$,
+    return StreamBuilder<Map<String, dynamic>?>(
+      stream: homeBloc.berandaData,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          final result = snapshot.data;
-          final beranda = result?.orNull()?.userAndToken?.beranda;
-          final user = result?.orNull()?.userAndToken?.user;
-          final Map<String, dynamic> decodedToken = JwtDecoder.decode(beranda!);
-          print('ini beranda bang $decodedToken');
-          dataHome = decodedToken['beranda'];
-          print("datahome survey ${dataHome["penyerahanBPKB"]}");
+          final result = snapshot.data ?? {};
           return Scaffold(
             backgroundColor: Colors.white,
             body: RefreshIndicator(
@@ -120,9 +114,8 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin>
                 homeBloc.setBeranda();
               },
               child: bodyHomeWidget(
-                context,
-                homeBloc,
-                user,
+                homeBloc: homeBloc,
+                dataHome: result,
               ),
             ),
           );
@@ -165,7 +158,10 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin>
     );
   }
 
-  Widget bodyHomeWidget(BuildContext context, HomeBloc homeBloc, User? user) {
+  Widget bodyHomeWidget({
+    required HomeBloc homeBloc,
+    required Map<String, dynamic> dataHome,
+  }) {
     const num tkb = 90;
     final String tkbString = tkb.toString();
     final int decimalIndex = tkbString.indexOf('.');
@@ -332,10 +328,10 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin>
               context,
               KonfirmasiPinjamanPage.routeName,
               arguments: KonfirmasiPinjamanPage(
-                idPengajuan: dataHome['penyerahanBPKB']['idPengajuan'],
-                idTaskPengajuan: dataHome['penyerahanBPKB']['idTaskPengajuan'],
+                idPengajuan: data['penyerahanBPKB']['idPengajuan'],
+                idTaskPengajuan: data['penyerahanBPKB']['idTaskPengajuan'],
                 isStep: 4,
-                Data: dataHome['penyerahanBPKB']['dataPencairan'],
+                Data: data['penyerahanBPKB']['dataPencairan'],
               ),
             );
           }
@@ -585,20 +581,20 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin>
     return Container();
   }
 
-  Widget accountStatusWidget(int isAktivasi) {
-    if (isAktivasi > 0) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 16,
-        ),
-        child: accountVerifWidget(
-          dataHome['status'],
-          dataHome['dataPrivy'],
-        ),
-      );
-    }
-    return Container();
-  }
+  // Widget accountStatusWidget(int isAktivasi) {
+  //   if (isAktivasi > 0) {
+  //     return Padding(
+  //       padding: const EdgeInsets.symmetric(
+  //         vertical: 16,
+  //       ),
+  //       child: accountVerifWidget(
+  //         dataHome['status'],
+  //         dataHome['dataPrivy'],
+  //       ),
+  //     );
+  //   }
+  //   return Container();
+  // }
 
   Widget accountVerifWidget(
     Map<String, dynamic> statusAccount,

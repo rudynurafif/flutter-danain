@@ -82,41 +82,55 @@ class _StepNewDokumenState extends State<StepNewDokumen> {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  isCheck = !isCheck;
-                  widget.bloc.agreementPP(isCheck);
-                });
-              },
-              child: checkBoxLender(
-                isCheck,
-                Expanded(
-                  child: RichText(
-                    text: TextSpan(children: [
-                      TextSpan(
-                        text: 'Saya telah membaca dan menyetujui ',
-                        style: TextStyle(
-                          color: HexColor('#777777'),
-                          fontFamily: 'Poppins',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
+            StreamBuilder<String?>(
+                stream: bloc.documentStream,
+                builder: (context, snapshot) {
+                  print('isi dokumen: ${snapshot.data}');
+                  return GestureDetector(
+                    onTap: () async {
+                      if (snapshot.hasError) {
+                        return;
+                      }
+                      if (snapshot.hasData) {
+                        setState(() {
+                          isCheck = !isCheck;
+                          widget.bloc.agreementPP(isCheck);
+                        });
+                      }
+                      setState(() {
+                        isCheck = !isCheck;
+                        widget.bloc.agreementPP(isCheck);
+                      });
+                    },
+                    child: checkBoxLender(
+                      isCheck,
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(children: [
+                            TextSpan(
+                              text: 'Saya telah membaca dan menyetujui ',
+                              style: TextStyle(
+                                color: HexColor('#777777'),
+                                fontFamily: 'Poppins',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            TextSpan(
+                              text: 'Perjanjian Pemberian Pinjaman',
+                              style: TextStyle(
+                                color: HexColor('#333333'),
+                                fontFamily: 'Poppins',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ]),
                         ),
                       ),
-                      TextSpan(
-                        text: 'Perjanjian Pemberian Pinjaman',
-                        style: TextStyle(
-                          color: HexColor('#333333'),
-                          fontFamily: 'Poppins',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ]),
-                  ),
-                ),
-              ),
-            ),
+                    ),
+                  );
+                }),
             const SizedBox(height: 24),
             Button1(
               btntext: 'Lanjut',

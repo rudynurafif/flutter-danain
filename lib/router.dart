@@ -34,6 +34,8 @@ import 'package:flutter_danain/pages/borrower/menu/profile/tab_menu/info_bank/in
 import 'package:flutter_danain/pages/borrower/menu/profile/tab_menu/info_pribadi/detail/pekerjaan/info_pekerjaan_bloc.dart';
 import 'package:flutter_danain/pages/borrower/menu/profile/tab_menu/info_pribadi/detail/pribadi/info_pribadi_bloc.dart';
 import 'package:flutter_danain/pages/borrower/menu/profile/tab_menu/settings/ubah_password/ubah_password.dart';
+import 'package:flutter_danain/pages/borrower/new_register/new_register_bloc.dart';
+import 'package:flutter_danain/pages/borrower/new_register/new_register_page.dart';
 import 'package:flutter_danain/pages/borrower/product/cash_drive/konfirmasi_jadwal_survey_cd/konfirmasi_jadwal_survey_bloc.dart';
 import 'package:flutter_danain/pages/borrower/product/cash_drive/konfirmasi_jadwal_survey_cd/konfirmasi_jadwal_survey_page.dart';
 import 'package:flutter_danain/pages/borrower/after_login/konfirmasi_pinjaman_cd/konfirmasi_penyerahan_bpkb_page.dart';
@@ -123,6 +125,8 @@ import 'package:flutter_danain/pages/borrower/simulasi/pinjaman/simulasi_pinjama
 import 'package:flutter_danain/pages/borrower/simulasi/pinjaman/simulasi_pinjaman_page.dart';
 import 'package:flutter_danain/pages/borrower/simulasi/simulasi_cicilan_page.dart';
 import 'package:flutter_danain/pages/borrower/simulasi/tambah_emas_page.dart';
+import 'package:flutter_danain/pages/borrower/verifikasi_email/verif_email_bloc.dart';
+import 'package:flutter_danain/pages/borrower/verifikasi_email/verif_email_page.dart';
 import 'package:flutter_danain/pages/dokumen/html/dokumen_bloc.page.dart';
 import 'package:flutter_danain/pages/dokumen/html/dokumen_html_page.dart';
 import 'package:flutter_danain/pages/dokumen/pdf/dokumen_page.dart';
@@ -1015,6 +1019,36 @@ class Routers {
         child: const HubunganKeluargaPage(),
       );
     },
+
+    NewRegisterBorrowerPage.routeName: (context) {
+      return BlocProvider(
+        initBloc: (context) {
+          final userRepo = context.get<UserRepository>();
+          return NewRegisterBloc(
+            GetRequestUseCase(userRepo),
+            GetRequestV2UseCase(userRepo),
+            PostRequestUseCase(userRepo),
+            RegisterBorrowerUseCase(userRepo),
+          );
+        },
+        child: const NewRegisterBorrowerPage(),
+      );
+    },
+    VerifikasiEmailPage.routeName: (context) {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as VerifikasiEmailPage;
+      return BlocProvider(
+        initBloc: (context) {
+          final userRepo = context.get<UserRepository>();
+          return VerifEmailBloc(
+            GetRequestUseCase(userRepo),
+            PostRequestUseCase(userRepo),
+          );
+        },
+        child: VerifikasiEmailPage(email: args.email),
+      );
+    },
+
     AktivasiPage.routeName: (context) {
       return BlocProvider(
         initBloc: (context) {

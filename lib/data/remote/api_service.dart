@@ -97,17 +97,19 @@ class ApiService implements RemoteDataSource {
         } on SimpleTimeoutException catch (e, s) {
           throw RemoteDataSourceException('Timeout error', e, s);
         } on SimpleErrorResponseException catch (e, s) {
-          String message;
+          String message = '';
           try {
-            message = jsonDecode(e.errorResponseBody)['message'] as String;
-          } catch (_) {
-            try {
-              message =
-                  jsonDecode(e.errorResponseBody)['responseMessage'] as String;
-            } catch (_) {
-              message = 'Maaf sepertinya terjadi kesalahan: ${e.toString()}';
+            if (e.statusCode == 404) {
+              message = 'Url tidak terdefinisi';
+            } else if (e.statusCode == 400 || e.statusCode == 401) {
+              message = jsonDecode(e.errorResponseBody)['message'] as String;
+            } else if (e.statusCode == 500 || e.statusCode == 502) {
+              message = 'Saat ini aplikasi sedang mengalami gangguan';
             }
+          } catch (error) {
+            message = error.toString();
           }
+
           throw RemoteDataSourceException(message, e, s);
         } catch (e, s) {
           throw RemoteDataSourceException('Other error', e, s);
@@ -263,6 +265,55 @@ class ApiService implements RemoteDataSource {
           );
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('token', response['data']['accessToken']);
+          return TokenResponse.fromJson(jsonData);
+        },
+      );
+  @override
+  Single<TokenResponse> registerBorrower(Map<String, dynamic> myJson) => _wrap(
+        (cancelToken) async {
+          final url = Uri.https(
+            dotenv.env['BASE_URL']!,
+            '/api/beeborroweruser/v1/user/register-borrower',
+          );
+          final dateNow = Signature().getTimestamp();
+          final secret = dotenv.env['API_KEY_AUTH']!;
+          final payload = {
+            'get': url.toString(),
+            'timestamp': dateNow,
+          };
+          final signature = Signature().getSignature(secret, payload);
+          final header = {
+            'api-key': secret,
+            'x-SIGNATURE-key': signature,
+            'timestamps': dateNow,
+          };
+          payload;
+          final response = await _client.postJson(
+            url,
+            body: {
+              'request': myJson,
+            },
+            headers: header,
+          );
+          final Map<String, dynamic> jsonData = {
+            'token': response['data']['token']['AccessToken'].toString(),
+            'refreshToken':
+                response['data']['token']['RefreshToken'].toString(),
+            'message': response['responseMessage'],
+          };
+          await storage.setItem(
+            'token',
+            response['data']['token']['AccessToken'],
+          );
+          await rxPrefs.setString(
+            'token',
+            response['data']['token']['AccessToken'],
+          );
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString(
+            'token',
+            response['data']['token']['AccessToken'],
+          );
           return TokenResponse.fromJson(jsonData);
         },
       );
@@ -4543,7 +4594,7 @@ class ApiService implements RemoteDataSource {
     required Map<String, String> moreHeader,
     required bool isUseToken,
     required serviceBackend service,
-    required String token,
+    required String? token,
   }) async {
     Map<String, String> header = {};
     String basicAuth = '';
@@ -4644,7 +4695,7 @@ class ApiService implements RemoteDataSource {
     required Map<String, dynamic> body,
     required Map<String, String> moreHeader,
     required bool isUseToken,
-    required String token,
+    required String? token,
   }) async {
     final timestamp = Signature().getTimestamp();
 
@@ -4691,7 +4742,7 @@ class ApiService implements RemoteDataSource {
     required Map<String, dynamic> queryParam,
     required Map<String, String> moreHeader,
     required bool isUseToken,
-    required String token,
+    required String? token,
   }) async {
     final timestamp = Signature().getTimestamp();
     final urlFull = 'https://${dotenv.env['BASE_URL']}/$url';
@@ -4708,8 +4759,7 @@ class ApiService implements RemoteDataSource {
       payload,
     );
     final Map<String, String> header = {
-      'api-key': dotenv.env['API_KEY_AUTH'].toString(),
-      'x-SIGNATURE-key': signature,
+      'api-key': signature,
       'timestamps': timestamp,
     };
     if (isUseToken == true) {
@@ -4739,7 +4789,7 @@ class ApiService implements RemoteDataSource {
     required Map<String, String> moreHeader,
     required bool isUseToken,
     required serviceBackend service,
-    required String token,
+    required String? token,
   }) async {
     Map<String, String> header = {};
     String basicAuth = '';
@@ -4843,7 +4893,7 @@ class ApiService implements RemoteDataSource {
     required Map<String, String> moreHeader,
     required bool isUseToken,
     required serviceBackend service,
-    required String token,
+    required String? token,
   }) async {
     Map<String, String> header = {};
     String basicAuth = '';
@@ -4899,7 +4949,7 @@ class ApiService implements RemoteDataSource {
     required Map<String, String> moreHeader,
     required bool isUseToken,
     required serviceBackend service,
-    required String token,
+    required String? token,
   }) async {
     Map<String, String> header = {};
     String basicAuth = '';
@@ -5003,7 +5053,7 @@ class ApiService implements RemoteDataSource {
     required Map<String, String> moreHeader,
     required bool isUseToken,
     required serviceBackend service,
-    required String token,
+    required String? token,
   }) async {
     Map<String, String> header = {};
     String basicAuth = '';

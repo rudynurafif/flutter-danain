@@ -132,6 +132,11 @@ abstract class UserRepository {
     required Map<String, dynamic> payload,
   });
 
+
+  UnitResultSingle registerBorrower({
+    required Map<String, dynamic> payload,
+  });
+
   Future<Either<String, GeneralResponse>> getHubunganKeluarga();
 
   Future<Either<String, GeneralResponse>> postHubunganKeluarga({

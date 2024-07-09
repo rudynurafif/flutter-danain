@@ -197,7 +197,7 @@ class NewDetailPendanaanBloc extends DisposeCallbackBaseBloc {
         );
         response.fold(
           ifLeft: (error) {
-            print('error ngab $error');
+            documentController.addError('Terjadi kesalahan: $error');
           },
           ifRight: (dynamic response) {
             documentController.add(response);
