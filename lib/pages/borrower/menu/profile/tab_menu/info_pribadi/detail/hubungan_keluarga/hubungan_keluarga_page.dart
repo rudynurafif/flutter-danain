@@ -481,7 +481,7 @@ class _HubunganKeluargaPageState extends State<HubunganKeluargaPage> {
                 builder: (context, snapshot) {
                   final isPasangan = snapshot.data ?? 1;
 
-                  if (isPasangan == 0 && isKeluarga == 1) {
+                  if (isPasangan == 1 && isKeluarga == 1) {
                     return StreamBuilder<bool>(
                       stream: bloc.buttonPasangan,
                       builder: (context, snapshot) {
@@ -500,7 +500,7 @@ class _HubunganKeluargaPageState extends State<HubunganKeluargaPage> {
                       },
                     );
                   }
-                  if (isPasangan == 1 && isKeluarga == 0) {
+                  if ((isPasangan == 0 || isPasangan == 2) && isKeluarga == 0) {
                     return StreamBuilder<bool>(
                       stream: bloc.buttonKeluarga,
                       builder: (context, snapshot) {
@@ -519,7 +519,7 @@ class _HubunganKeluargaPageState extends State<HubunganKeluargaPage> {
                       },
                     );
                   }
-                  if (isPasangan == 0 && isKeluarga == 0) {
+                  if (isPasangan == 1 && isKeluarga == 0) {
                     return StreamBuilder<bool>(
                       stream: bloc.buttonAll,
                       builder: (context, snapshot) {

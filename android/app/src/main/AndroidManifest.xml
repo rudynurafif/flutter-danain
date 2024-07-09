@@ -43,23 +43,18 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter >
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
-                <data android:scheme="https"
-                    android:host="m.danain.co.id"
-                    android:pathPrefix="/appslink" />
-                <!-- note that the leading "/" is required for pathPrefix-->
+                <data android:scheme="http" android:host="m.danain.co.id" android:pathPrefix="/appslink" />
             </intent-filter>
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "example://gizmos” -->
-                <data android:scheme="app"
-                    android:host="danain.link" />
+                <data android:scheme="https" android:host="m.danain.co.id" android:pathPrefix="/appslink" />
             </intent-filter>
             <meta-data
                 android:name="io.flutter.embedding.android.SplashScreenDrawable"

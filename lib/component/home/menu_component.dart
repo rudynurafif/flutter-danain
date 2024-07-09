@@ -21,7 +21,8 @@ class _MenusWidgetState extends State<MenusWidget> {
   @override
   Widget build(BuildContext context) {
     final status = widget.data['status'];
-    final int isPengajuan = status['is_pengajuan_pinjaman'];
+    // final int isPengajuan = status['is_pengajuan_pinjaman'];
+    final int isPengajuan = status['is_pengajuan_bpkb'];
     final int isKeluarga = status['is_keluarga'];
     final int isPasangan = status['is_pasangan'];
     return Container(

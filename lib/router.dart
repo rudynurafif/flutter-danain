@@ -29,6 +29,8 @@ import 'package:flutter_danain/pages/borrower/after_login/complete_data/complete
 import 'package:flutter_danain/pages/borrower/after_login/home/konfirmasi_pinjaman_cd/konfirmasi_pinjaman_cd_bloc.dart';
 import 'package:flutter_danain/pages/borrower/after_login/home/konfirmasi_pinjaman_cd/konfirmasi_pinjaman_cd_page.dart';
 import 'package:flutter_danain/pages/borrower/after_login/introduction/introduction_product_page.dart';
+import 'package:flutter_danain/pages/borrower/email_deeplink/email_deeplink.dart';
+import 'package:flutter_danain/pages/borrower/email_deeplink/email_deeplink_bloc.dart';
 import 'package:flutter_danain/pages/borrower/menu/profile/tab_menu/info_bank/info_bank_bloc.dart';
 import 'package:flutter_danain/pages/borrower/menu/profile/tab_menu/info_bank/info_bank_page.dart';
 import 'package:flutter_danain/pages/borrower/menu/profile/tab_menu/info_pribadi/detail/pekerjaan/info_pekerjaan_bloc.dart';
@@ -707,6 +709,21 @@ class Routers {
           );
         },
         child: const SettingPageBorrower(),
+      );
+    },
+
+    EmailDeepLinkPage.routeName: (context) {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as EmailDeepLinkPage;
+      return BlocProvider<EmailDeepLinkBloc>(
+        initBloc: (context) {
+          final userRepo = context.get<UserRepository>();
+          return EmailDeepLinkBloc(GetAuthStateStreamUseCase(userRepo));
+        },
+        child: EmailDeepLinkPage(
+          keys: args.keys,
+          isVerifikasi: args.isVerifikasi,
+        ),
       );
     },
 

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_danain/data/api/api_service_helper.dart';
 import 'package:flutter_danain/data/constants.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_danain/utils/constants.dart';
 import 'package:flutter_danain/utils/string_ext.dart';
 import 'package:flutter_danain/widgets/widget_element.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rx_shared_preferences/rx_shared_preferences.dart';
 
 class VerifikasiEmailPage extends StatefulWidget {
   static const routeName = '/verifikasi_email';
@@ -23,6 +25,10 @@ class VerifikasiEmailPage extends StatefulWidget {
 }
 
 class _VerifikasiEmailPageState extends State<VerifikasiEmailPage> {
+  final rxPrefs = RxSharedPreferences(
+    SharedPreferences.getInstance(),
+    kReleaseMode ? null : const RxSharedPreferencesDefaultLogger(),
+  );
   @override
   void initState() {
     super.initState();
@@ -39,6 +45,7 @@ class _VerifikasiEmailPageState extends State<VerifikasiEmailPage> {
     final bloc = context.bloc<VerifEmailBloc>();
     return WillPopScope(
       onWillPop: () async {
+        await rxPrefs.clear();
         await Navigator.pushNamedAndRemoveUntil(
           context,
           PreferencePage.routeName,
@@ -53,6 +60,7 @@ class _VerifikasiEmailPageState extends State<VerifikasiEmailPage> {
           elevation: 0,
           isLeading: true,
           leadingAction: () {
+            rxPrefs.clear();
             Navigator.pushNamedAndRemoveUntil(
               context,
               PreferencePage.routeName,
@@ -87,7 +95,8 @@ class _VerifikasiEmailPageState extends State<VerifikasiEmailPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SvgPicture.asset(
-                    'assets/images/forgot_password/send_email.svg'),
+                  'assets/images/forgot_password/send_email.svg',
+                ),
                 const SizedBox(height: 24),
                 const Headline2(text: checkEmail),
                 const SizedBox(height: 8),

@@ -14,6 +14,7 @@ import 'package:flutter_danain/data/simulasi_repository_imp.dart';
 import 'package:flutter_danain/data/transaksi_repository_imp.dart';
 import 'package:flutter_danain/domain/repositories/simulasi_repository.dart';
 import 'package:flutter_danain/domain/repositories/transaksi_repository.dart';
+import 'package:flutter_danain/pages/borrower/email_deeplink/email_deeplink.dart';
 import 'package:flutter_danain/pages/borrower/forgot_password/expired_page.dart';
 import 'package:flutter_danain/pages/borrower/forgot_password/validate/validate_page.dart';
 import 'package:flutter_danain/pages/borrower/menu/profile/tab_menu/settings/update_email/deeplink_page.dart';
@@ -164,11 +165,23 @@ Future<void> initDeepLinkHandling() async {
   // Initialize the platform channel for handling deep links
   // print('check link nya bang $initialLink');
   getLinksStream().listen((String? link) {
-    handleDeepLink(link);
+    handleDeeplink(link);
   });
 }
 
-Future<void> handleDeepLink(String? link) async {
+Future<void> handleDeeplink(String? link) async {
+  if (Platform.isAndroid) {
+    await handleAndroid(link);
+  }
+
+  if (Platform.isIOS) {
+    await handleIos(link);
+  }
+}
+
+Future<void> handleIos(String? link) async {}
+
+Future<void> handleAndroid(String? link) async {
   final rxPrefs = RxSharedPreferences.getInstance();
   final navigatorState = navigatorKey.currentState;
   if (link == null) {
@@ -180,6 +193,17 @@ Future<void> handleDeepLink(String? link) async {
   print('link satunya bang: $deepLink');
   if (deepLink.queryParameters.containsKey('ref')) {
     final ref = deepLink.queryParameters['ref'];
+    if (ref == 'borrower') {
+      if (navigatorState != null) {
+        await navigatorState.pushNamed(
+          EmailDeepLinkPage.routeName,
+          arguments: EmailDeepLinkPage(
+            keys: deepLink.queryParameters['keys'].toString(),
+            isVerifikasi: deepLink.queryParameters['isVerifikasi'].toString(),
+          ),
+        );
+      }
+    }
     if (ref == 'borrowerverifikasiemail') {
       if (navigatorState != null) {
         print(' ini email baru aku loh ${rxPrefs.getString('email_baru')}');

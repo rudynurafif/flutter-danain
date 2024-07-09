@@ -21,7 +21,6 @@ class _StartPageState extends State<StartPage> {
 
   @override
   void initState() {
-    rxPrefs.clear();
     super.initState();
   }
 
