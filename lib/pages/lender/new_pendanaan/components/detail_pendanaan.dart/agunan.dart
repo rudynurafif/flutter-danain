@@ -61,8 +61,7 @@ class AgunanWidget extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           TextWidget(
-            text:
-                'Pendanaan dilengkapi dengan agunan Buku Pemilik Kendaraan Bermotor (BPKB).',
+            text: 'Pendanaan dilengkapi dengan agunan Buku Pemilik Kendaraan Bermotor (BPKB).',
             fontSize: 12,
             fontWeight: FontWeight.w400,
             color: HexColor('#777777'),
@@ -72,7 +71,7 @@ class AgunanWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                width: 100,
+                width: 120,
                 child: detailDataPendanaanLender(
                   'Jenis',
                   shortText(jenisKendaraan, 10),
@@ -181,8 +180,7 @@ class AgunanLoading extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           TextWidget(
-            text:
-                'Pendanaan dilengkapi dengan agunan Buku Pemilik Kendaraan Bermotor (BPKB).',
+            text: 'Pendanaan dilengkapi dengan agunan Buku Pemilik Kendaraan Bermotor (BPKB).',
             fontSize: 12,
             fontWeight: FontWeight.w400,
             color: HexColor('#777777'),
