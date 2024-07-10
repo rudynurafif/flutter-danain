@@ -4,6 +4,7 @@ import 'package:flutter_danain/pages/borrower/after_login/aktivasi_akun/aktivasi
 import 'package:flutter_danain/pages/borrower/after_login/complete_data/complete_data_page.dart';
 import 'package:flutter_danain/pages/borrower/after_login/verification/fill_personal_data_page.dart';
 import 'package:flutter_danain/pages/borrower/menu/profile/tab_menu/info_bank/info_bank_page.dart';
+import 'package:flutter_danain/pages/borrower/menu/profile/tab_menu/info_bank/step/create_bank_screen.dart';
 import 'package:flutter_danain/pages/borrower/menu/profile/tab_menu/info_pribadi/detail/hubungan_keluarga/hubungan_keluarga_page.dart';
 import 'package:flutter_danain/pages/borrower/product/cash_drive/pinjaman/proses/proses_pengajuan_page.dart';
 import 'package:flutter_danain/pages/lender/profile/info_bank/info_bank_lender_page.dart';
@@ -17,8 +18,7 @@ void showVerifikasiAlert(BuildContext context) {
     builder: (context) => ModalPopUp(
       icon: 'assets/images/home/verification.svg',
       title: 'Akun Dalam Proses Verifikasi',
-      message:
-          'Proses verifikasi data Anda memerlukan waktu kurang lebih 1x24 jam',
+      message: 'Proses verifikasi data Anda memerlukan waktu kurang lebih 1x24 jam',
     ),
   );
 }
@@ -55,8 +55,7 @@ void showKontakDaruratAlert(BuildContext context) {
       return ModalPopUp(
         icon: 'assets/images/home/datadiri-verif.svg',
         title: 'Lengkapi Kontak Darurat',
-        message:
-            'Lengkapi data kontak darurat di profil  untuk melanjutkan pengajuan',
+        message: 'Lengkapi data kontak darurat di profil  untuk melanjutkan pengajuan',
         actions: [
           ButtonWidget(
             title: 'Lengkapi Kontak Darurat',
@@ -102,8 +101,7 @@ void showHasnotBankAlert(BuildContext context, String username) {
     builder: (context) => ModalPopUp(
       icon: 'assets/lender/home/bank.svg',
       title: 'Lengkapi Informasi Bank',
-      message:
-          'Akun bank Anda diperlukan untuk melakukan transaksi penarikan dana',
+      message: 'Akun bank Anda diperlukan untuk melakukan transaksi penarikan dana',
       actions: [
         Button2(
           btntext: 'Lengkapi Informasi Bank',
@@ -135,10 +133,15 @@ void showHasnotBanBorrowerAlert(BuildContext context) {
         Button2(
           btntext: 'Lengkapi Informasi Bank',
           action: () {
+            // Navigator.popAndPushNamed(
+            //   context,
+            //   InfoBankPage.routeName,
+            //   arguments: InfoBankPage(),
+            // );
             Navigator.popAndPushNamed(
               context,
-              InfoBankPage.routeName,
-              arguments: InfoBankPage(),
+              CreateInfoBankPage.routeName,
+              arguments: const CreateInfoBankPage(),
             );
           },
           color: HexColor(borrowerColor),
@@ -173,8 +176,7 @@ void showRejectPrivyAlert(BuildContext context) {
     builder: (context) => const ModalPopUp(
       icon: 'assets/images/icons/warning_red.svg',
       title: 'Akun Anda Belum Terverifikasi',
-      message:
-          'Tunggu sebentar ya, transaksi ini bisa diakses setelah akun Anda terverifikasi',
+      message: 'Tunggu sebentar ya, transaksi ini bisa diakses setelah akun Anda terverifikasi',
       actions: [],
     ),
   );

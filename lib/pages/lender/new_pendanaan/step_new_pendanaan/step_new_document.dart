@@ -88,15 +88,6 @@ class _StepNewDokumenState extends State<StepNewDokumen> {
                   print('isi dokumen: ${snapshot.data}');
                   return GestureDetector(
                     onTap: () async {
-                      if (snapshot.hasError) {
-                        return;
-                      }
-                      if (snapshot.hasData) {
-                        setState(() {
-                          isCheck = !isCheck;
-                          widget.bloc.agreementPP(isCheck);
-                        });
-                      }
                       setState(() {
                         isCheck = !isCheck;
                         widget.bloc.agreementPP(isCheck);
