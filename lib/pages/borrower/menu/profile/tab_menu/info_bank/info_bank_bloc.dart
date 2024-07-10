@@ -20,6 +20,12 @@ class InformasiBankBloc extends DisposeCallbackBaseBloc {
     required int idBank,
     required String noRek,
     required String kota,
+    required String namaPemilik,
+  }) createBank;
+  final Function({
+    required int idBank,
+    required String noRek,
+    required String kota,
   }) updateBank;
 
   final BehaviorSubject<int> step;
@@ -35,6 +41,7 @@ class InformasiBankBloc extends DisposeCallbackBaseBloc {
     required this.listBank,
     required this.errorMessage,
     required this.isLoading,
+    required this.createBank,
     required this.updateBank,
     required Function0<void> dispose,
   }) : super(dispose);
@@ -74,6 +81,44 @@ class InformasiBankBloc extends DisposeCallbackBaseBloc {
         );
       } catch (e) {
         bankBorrower.addError(e.toString());
+      }
+    }
+
+    Future<void> createBank({
+      required int idBank,
+      required String noRek,
+      required String kota,
+      required String namaPemilik,
+    }) async {
+      isLoading.add(true);
+      final infoBank = bankBorrower.valueOrNull ?? {};
+
+      try {
+        final response = await postRequest.call(
+          url: 'api/beeborroweruser/v1/user/update/bank',
+          body: {
+            'idRekening': infoBank['id_peminjam_rekening'] ?? 0,
+            'no_rekening': noRek,
+            'an_rekening': namaPemilik,
+            'id_bank': idBank,
+            'kota_bank': kota,
+            'is_active': 1
+          },
+        );
+        response.fold(
+          ifLeft: (error) {
+            isLoading.add(false);
+            errorMessage.add(error);
+          },
+          ifRight: (value) {
+            getDataBank();
+            isLoading.add(false);
+            stepController.add(1);
+          },
+        );
+      } catch (e) {
+        isLoading.add(false);
+        errorMessage.add(e.toString());
       }
     }
 
@@ -157,6 +202,19 @@ class InformasiBankBloc extends DisposeCallbackBaseBloc {
       }) async {
         await updateBank(idBank: idBank, noRek: noRek, kota: kota);
       },
+      createBank: ({
+        required int idBank,
+        required String noRek,
+        required String kota,
+        required String namaPemilik,
+      }) async {
+        await createBank(
+          idBank: idBank,
+          noRek: noRek,
+          kota: kota,
+          namaPemilik: namaPemilik,
+        );
+      },
     );
   }
 }
@@ -203,8 +261,7 @@ class InfoBankBloc {
   Stream<InfoBankState?> get validateBankStream => validateBankStatus.stream;
 
   final updateBankMessage = BehaviorSubject<UpdateBankState?>();
-  Stream<UpdateBankState?> get updateBankMessageStream =>
-      updateBankMessage.stream;
+  Stream<UpdateBankState?> get updateBankMessageStream => updateBankMessage.stream;
 
   final isLoadingButton = BehaviorSubject<bool>.seeded(false);
   Stream<bool> get isLoadingStream => isLoadingButton.stream;
@@ -215,12 +272,10 @@ class InfoBankBloc {
       final response = await _apiService.getDataBank();
       dataController.sink.add(response[0]);
       print('showing detail data ${response[0]}');
-      bankSelected.sink.add(response.isNotEmpty
-          ? response[0]['id_bank'] ?? response[0]['idbank']
-          : 0);
+      bankSelected.sink
+          .add(response.isNotEmpty ? response[0]['id_bank'] ?? response[0]['idbank'] : 0);
 
-      idRekening.sink
-          .add(response.isNotEmpty ? response[0]['id_rekening'] ?? 0 : 0);
+      idRekening.sink.add(response.isNotEmpty ? response[0]['id_rekening'] ?? 0 : 0);
       anRek.sink.add(response[0]['an_rekening'] ?? response[0]['anrekening']);
       noRek.sink.add(response[0]['no_rekening'] ?? response[0]['norekening']);
       kotaBank.sink.add(response[0]['kota_bank'] ?? "");
@@ -270,8 +325,7 @@ class InfoBankBloc {
       final idRek = idRekening.valueOrNull;
 
       if (idBank != null && rek != null && kota != null && idRek != null) {
-        final Map<String, dynamic> response =
-            await _apiService.updateDataBankLender(
+        final Map<String, dynamic> response = await _apiService.updateDataBankLender(
           idBank,
           rek,
           kota,
@@ -320,11 +374,7 @@ class InfoBankBloc {
       final an = anRek.valueOrNull;
       final kota = kotaBank.valueOrNull;
       final idRek = idRekening.valueOrNull;
-      if (idBank != null &&
-          rek != null &&
-          an != null &&
-          kota != null &&
-          idRek != null) {
+      if (idBank != null && rek != null && an != null && kota != null && idRek != null) {
         final response = await _apiService.updateDataBank(
           idBank,
           rek,

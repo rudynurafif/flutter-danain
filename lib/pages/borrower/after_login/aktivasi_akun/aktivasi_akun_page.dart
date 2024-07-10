@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_danain/data/api/api_service_helper.dart';
 import 'package:flutter_danain/pages/borrower/after_login/aktivasi_akun/aktivasi.dart';
 import 'package:flutter_danain/pages/borrower/after_login/aktivasi_akun/list_page.dart/step_1_aktivasi.dart';
-import 'package:flutter_danain/pages/borrower/after_login/aktivasi_akun/list_page.dart/step_2_aktivasi.dart';
+import 'package:flutter_danain/pages/borrower/after_login/aktivasi_akun/list_page.dart/step_3_aktivasi.dart';
 import 'package:flutter_danain/pages/borrower/home/home_page.dart';
 import 'package:flutter_danain/utils/loading.dart';
 import 'package:flutter_danain/utils/utils.dart';
 import 'package:flutter_danain/widgets/modal/modalPopUp.dart';
 
 import 'list_page.dart/component.dart';
+import 'list_page.dart/step_2_aktivasi.dart';
 
 class AktivasiPage extends StatefulWidget {
   static const routeName = '/aktivasi_page';
@@ -104,8 +105,7 @@ class _AktivasiPageState extends State<AktivasiPage> {
           return const ModalPopUpNoClose(
             icon: 'assets/images/icons/check.svg',
             title: 'Data Pendukung Berhasil Disimpan',
-            message:
-                'Mulai nikmati layanan lengkap kami dan  rasakan pengalaman terbaik Anda.',
+            message: 'Mulai nikmati layanan lengkap kami dan  rasakan pengalaman terbaik Anda.',
           );
         },
       ),
@@ -131,6 +131,7 @@ class _AktivasiPageState extends State<AktivasiPage> {
     final listWidget = [
       Step1Aktivasi(aktivasiBloc: bloc),
       Step2Aktivasi(aktivasiBloc: bloc),
+      Step3Aktivasi(aktivasiBloc: bloc),
     ];
     return StreamBuilder<int>(
       stream: bloc.step.stream,

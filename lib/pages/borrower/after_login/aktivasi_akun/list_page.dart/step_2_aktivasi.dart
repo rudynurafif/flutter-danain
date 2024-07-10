@@ -1,34 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_danain/data/constants.dart';
 import 'package:flutter_danain/pages/borrower/after_login/aktivasi_akun/aktivasi.dart';
-import 'package:flutter_danain/pages/borrower/after_login/aktivasi_akun/list_page.dart/component.dart';
-import 'package:flutter_danain/utils/input_formatter.dart';
-import 'package:flutter_danain/widgets/button/button.dart';
-import 'package:flutter_danain/widgets/form/select_form.dart';
-import 'package:flutter_danain/widgets/form/text_field_widget.dart';
 import 'package:flutter_danain/widgets/space_v.dart';
-import 'package:flutter_danain/widgets/template/app_bar.dart';
 import 'package:flutter_danain/widgets/template/parent.dart';
 import 'package:flutter_danain/widgets/text/text_widget.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../../../../../utils/input_formatter.dart';
+import '../../../../../widgets/button/button.dart';
+import '../../../../../widgets/form/select_form.dart';
+import '../../../../../widgets/form/text_field_widget.dart';
+import '../../../../../widgets/template/app_bar.dart';
+
 class Step2Aktivasi extends StatefulWidget {
   final AktivasiAkunBloc aktivasiBloc;
-  const Step2Aktivasi({
-    super.key,
-    required this.aktivasiBloc,
-  });
+  const Step2Aktivasi({super.key, required this.aktivasiBloc});
 
   @override
   State<Step2Aktivasi> createState() => _Step2AktivasiState();
 }
 
 class _Step2AktivasiState extends State<Step2Aktivasi> {
-  final noRekController = TextEditingController();
-  final kotaBankController = TextEditingController();
-  String? errorNoRek;
-  String? errorKotaBank;
+  final namaLengkapKontakDaruratController = TextEditingController();
+  final hubunganKontakDaruratController = TextEditingController();
+  final noHandphoneKontakDaruratController = TextEditingController();
+  final namaLengkapPasanganController = TextEditingController();
+  final noKtpPasanganController = TextEditingController();
+  final noHandphonePasanganController = TextEditingController();
+
+  // error text
+  String? errorNamaLengkapKontakDarurat;
+  Map<String, dynamic>? errorHubunganKontakDarurat;
+  String? errorNoHandphoneKontakDarurat;
+  String? errorNamaLengkapPasangan;
+  String? errorNoKtpPasangan;
+  String? errorNoHandphonePasangan;
+
+  @override
+  void initState() {
+    super.initState();
+    final bloc = widget.aktivasiBloc;
+    if (bloc.namaLengkapKontakDarurat.hasValue) {
+      namaLengkapKontakDaruratController.text = bloc.namaLengkapKontakDarurat.value!;
+    }
+    // if (bloc.hubunganKontakDarurat.hasValue) {
+    //   hubunganKontakDaruratController.value = bloc.hubunganKontakDarurat.value!;
+    // }
+    if (bloc.noHandphoneKontakDarurat.hasValue) {
+      noHandphoneKontakDaruratController.text = bloc.noHandphoneKontakDarurat.value!;
+    }
+    if (bloc.namaLengkapPasangan.hasValue) {
+      namaLengkapPasanganController.text = bloc.namaLengkapPasangan.value!;
+    }
+    if (bloc.noKtpPasangan.hasValue) {
+      noKtpPasanganController.text = bloc.noKtpPasangan.value!;
+    }
+    if (bloc.noHandphonePasangan.hasValue) {
+      noHandphonePasanganController.text = bloc.noHandphonePasangan.value!;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final bloc = widget.aktivasiBloc;
@@ -38,74 +68,48 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
         child: AppBarWidget(
           context: context,
           isLeading: true,
-          title: 'Informasi Akun Bank',
-          leadingAction: () {
-            bloc.step.add(1);
-          },
+          title: 'Kontak Darurat',
         ),
-      ),
-      bottomNavigation: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: StreamBuilder<bool>(
-              stream: bloc.buttonStep2,
-              builder: (context, snapshot) {
-                final isValid = snapshot.data ?? false;
-                return ButtonWidget(
-                  title: 'Verifikasi',
-                  color: isValid ? null : HexColor('#ADB3BC'),
-                  onPressed: () {
-                    if (isValid) {
-                      bloc.getBankData();
-                    }
-                  },
-                );
-              },
-            ),
-          ),
-          const SpacerV(value: 24),
-        ],
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SpacerV(value: 24),
+              const SpacerV(value: 28),
               const TextWidget(
-                text: 'Informasi Akun Bank',
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+                text: 'Kontak Darurat',
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
-              const SpacerV(),
+              const SpacerV(value: 8),
               TextWidget(
-                text:
-                    'Informasi rekening diperlukan untuk melakukan pencairan pinjaman di Danain',
+                text: 'Masukkan detail data dibawah ini dengan benar. Semua data wajib diisi.',
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
                 color: HexColor('#777777'),
               ),
-              const SpacerV(value: 24),
-              formNamaBank(bloc),
               const SpacerV(value: 16),
-              formNoRek(bloc),
+              formNamaLengkapKontakDarurat(bloc),
+              formHubunganKontakDarurat(bloc),
               const SpacerV(value: 16),
-              formKotaBank(bloc),
+              formNoHandphoneKontakDarurat(bloc),
               const SpacerV(value: 24),
-              AlertComponent(
-                message:
-                    'Pastikan rekening bank Anda sudah sesuai. Danain tidak bertanggung jawab atas kesalahan transfer dana karena ketidaksesuaian rekening bank.',
-                icon: Icon(
-                  Icons.error_outline,
-                  size: 16,
-                  color: HexColor(primaryColorHex),
-                ),
-                borderColor: HexColor('#E9F6EB'),
-                color: HexColor('#F9FFFA'),
+              const TextWidget(
+                text: 'Data Pasangan',
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
+              const SpacerV(value: 16),
+              formNamaLengkapPasangan(bloc),
+              const SpacerV(value: 16),
+              formNoKtpPasangan(bloc),
+              const SpacerV(value: 16),
+              formNoHandphonePasangan(bloc),
+              const SpacerV(value: 24),
+              buttonWidget(bloc)
             ],
           ),
         ),
@@ -113,24 +117,55 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
     );
   }
 
-  Widget formNamaBank(AktivasiAkunBloc bloc) {
+  Widget formNamaLengkapKontakDarurat(AktivasiAkunBloc bloc) {
+    return Stack(
+      children: [
+        TextF(
+          controller: namaLengkapKontakDaruratController,
+          hintText: 'Contoh: Siti',
+          hint: 'Nama Lengkap',
+          onChanged: (value) {
+            if (value.length < 1) {
+              setState(() {
+                errorNamaLengkapKontakDarurat = 'Nama lengkap tidak valid';
+              });
+              bloc.namaLengkapKontakDarurat.add(null);
+            } else {
+              setState(() {
+                errorNamaLengkapKontakDarurat = null;
+              });
+              bloc.namaLengkapKontakDarurat.add(value);
+            }
+          },
+          validator: (String? value) {
+            if (value!.length < 1) {
+              return '';
+            }
+            return null;
+          },
+        ),
+        ErrorText(error: errorNamaLengkapKontakDarurat),
+      ],
+    );
+  }
+
+  Widget formHubunganKontakDarurat(AktivasiAkunBloc bloc) {
     return StreamBuilder<List<dynamic>>(
-      stream: bloc.bankList,
+      stream: bloc.hubunganList,
       builder: (context, snapshot) {
         final listData = snapshot.data ?? [];
         return StreamBuilder<Map<String, dynamic>?>(
-          stream: bloc.namaBank.stream,
+          stream: bloc.hubunganKontakDarurat.stream,
           builder: (context, snapshot) {
-            return TextFormSelectSearch(
+            return TextFormSelect(
               dataSelected: snapshot.data,
               textDisplay: 'nama',
-              placeHolder: 'Pilih Bank',
-              label: 'Nama Bank',
+              placeHolder: 'Pilih hubungan',
+              label: 'Hubungan',
               idDisplay: 'id',
               listData: listData,
-              searchPlaceholder: 'Cari Bank',
               onSelect: (value) {
-                bloc.namaBank.add(value);
+                bloc.hubunganKontakDarurat.add(value);
               },
             );
           },
@@ -139,28 +174,24 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
     );
   }
 
-  Widget formNoRek(AktivasiAkunBloc bloc) {
+  Widget formNoHandphoneKontakDarurat(AktivasiAkunBloc bloc) {
     return Stack(
       children: [
         TextF(
-          controller: noRekController,
-          hintText: 'Contoh: 123123123',
-          hint: 'Nomor Rekening',
-          keyboardType: TextInputType.number,
-          inputFormatter: [
-            FilteringTextInputFormatter.digitsOnly,
-          ],
+          controller: noHandphoneKontakDaruratController,
+          hintText: 'Contoh: 081234567890',
+          hint: 'Nomor Handphone',
           onChanged: (value) {
             if (value.length < 1) {
               setState(() {
-                errorNoRek = 'Nomor Rekening tidak valid';
+                errorNoHandphoneKontakDarurat = 'Nomor handphone tidak valid';
               });
-              bloc.noRekening.add(null);
+              bloc.noHandphoneKontakDarurat.add(null);
             } else {
               setState(() {
-                errorNoRek = null;
+                errorNoHandphoneKontakDarurat = null;
               });
-              bloc.noRekening.add(value);
+              bloc.noHandphoneKontakDarurat.add(value);
             }
           },
           validator: (String? value) {
@@ -170,29 +201,29 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
             return null;
           },
         ),
-        ErrorText(error: errorNoRek),
+        ErrorText(error: errorNoHandphoneKontakDarurat),
       ],
     );
   }
 
-  Widget formKotaBank(AktivasiAkunBloc bloc) {
+  Widget formNamaLengkapPasangan(AktivasiAkunBloc bloc) {
     return Stack(
       children: [
         TextF(
-          controller: kotaBankController,
-          hintText: 'Contoh: Jakarta',
-          hint: 'Kota Bank',
+          controller: namaLengkapPasanganController,
+          hintText: 'Contoh: Putri Kusuma',
+          hint: 'Nama Lengkap',
           onChanged: (value) {
             if (value.length < 1) {
               setState(() {
-                errorKotaBank = 'Kota bank tidak valid';
+                errorNamaLengkapPasangan = 'Nama lengkap tidak valid';
               });
-              bloc.kotaBank.add(null);
+              bloc.namaLengkapPasangan.add(null);
             } else {
               setState(() {
-                errorKotaBank = null;
+                errorNamaLengkapPasangan = null;
               });
-              bloc.kotaBank.add(value);
+              bloc.namaLengkapPasangan.add(value);
             }
           },
           validator: (String? value) {
@@ -202,8 +233,90 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
             return null;
           },
         ),
-        ErrorText(error: errorKotaBank),
+        ErrorText(error: errorNamaLengkapPasangan),
       ],
+    );
+  }
+
+  Widget formNoKtpPasangan(AktivasiAkunBloc bloc) {
+    return Stack(
+      children: [
+        TextF(
+          controller: noKtpPasanganController,
+          hintText: 'Contoh: 1123465768123456',
+          hint: 'Nomor KTP',
+          onChanged: (value) {
+            if (value.length < 1) {
+              setState(() {
+                errorNoKtpPasangan = 'Nomor KTP tidak valid';
+              });
+              bloc.noKtpPasangan.add(null);
+            } else {
+              setState(() {
+                errorNoKtpPasangan = null;
+              });
+              bloc.noKtpPasangan.add(value);
+            }
+          },
+          validator: (String? value) {
+            if (value!.length < 1) {
+              return '';
+            }
+            return null;
+          },
+        ),
+        ErrorText(error: errorNoKtpPasangan),
+      ],
+    );
+  }
+
+  Widget formNoHandphonePasangan(AktivasiAkunBloc bloc) {
+    return Stack(
+      children: [
+        TextF(
+          controller: noHandphonePasanganController,
+          hintText: 'Contoh: 081234567890',
+          hint: 'Nomor Handphone',
+          onChanged: (value) {
+            if (value.length < 1) {
+              setState(() {
+                errorNoHandphonePasangan = 'Nomor handphone tidak valid';
+              });
+              bloc.noHandphonePasangan.add(null);
+            } else {
+              setState(() {
+                errorNoHandphonePasangan = null;
+              });
+              bloc.noHandphonePasangan.add(value);
+            }
+          },
+          validator: (String? value) {
+            if (value!.length < 1) {
+              return '';
+            }
+            return null;
+          },
+        ),
+        ErrorText(error: errorNoHandphonePasangan),
+      ],
+    );
+  }
+
+  Widget buttonWidget(AktivasiAkunBloc bloc) {
+    return StreamBuilder<bool>(
+      stream: bloc.buttonStep2,
+      builder: (context, snapshot) {
+        final isValid = snapshot.data ?? false;
+        return ButtonWidget(
+          title: 'Lanjut',
+          color: isValid ? null : HexColor('#ADB3BC'),
+          onPressed: () {
+            if (isValid) {
+              bloc.step.add(3);
+            }
+          },
+        );
+      },
     );
   }
 }

@@ -192,6 +192,7 @@ import 'domain/usecases/ubah_hp_validasi_user_case.dart';
 import 'domain/usecases/validate_otp_pendanaan_use_case.dart';
 import 'package:flutter_danain/domain/usecases/send_email_register_use_case.dart';
 
+import 'pages/borrower/menu/profile/tab_menu/info_bank/step/create_bank_screen.dart';
 import 'pages/lender/check_pin/check_pin_bloc.dart';
 import 'pages/lender/rdl/regis_rdl_page.dart';
 
@@ -543,6 +544,20 @@ class Routers {
           );
         },
         child: const InfoBankPage(),
+      );
+    },
+    CreateInfoBankPage.routeName: (context) {
+      return BlocProvider(
+        initBloc: (context) {
+          final userRepo = context.get<UserRepository>();
+          return InformasiBankBloc(
+            GetDataUser(userRepo),
+            GetRequestUseCase(userRepo),
+            GetRequestV2UseCase(userRepo),
+            PostRequestUseCase(userRepo),
+          );
+        },
+        child: const CreateInfoBankPage(),
       );
     },
     InfoBankLenderPage.routeName: (context) {
