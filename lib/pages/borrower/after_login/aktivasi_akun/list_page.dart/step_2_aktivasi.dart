@@ -68,7 +68,7 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
         child: AppBarWidget(
           context: context,
           isLeading: true,
-          title: 'Informasi Pekerjaan',
+          title: 'Kontak Darurat',
         ),
       ),
       child: Padding(
@@ -117,6 +117,38 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
     );
   }
 
+  Widget formNamaLengkapKontakDarurat(AktivasiAkunBloc bloc) {
+    return Stack(
+      children: [
+        TextF(
+          controller: namaLengkapKontakDaruratController,
+          hintText: 'Contoh: Siti',
+          hint: 'Nama Lengkap',
+          onChanged: (value) {
+            if (value.length < 1) {
+              setState(() {
+                errorNamaLengkapKontakDarurat = 'Nama lengkap tidak valid';
+              });
+              bloc.namaLengkapKontakDarurat.add(null);
+            } else {
+              setState(() {
+                errorNamaLengkapKontakDarurat = null;
+              });
+              bloc.namaLengkapKontakDarurat.add(value);
+            }
+          },
+          validator: (String? value) {
+            if (value!.length < 1) {
+              return '';
+            }
+            return null;
+          },
+        ),
+        ErrorText(error: errorNamaLengkapKontakDarurat),
+      ],
+    );
+  }
+
   Widget formHubunganKontakDarurat(AktivasiAkunBloc bloc) {
     return StreamBuilder<List<dynamic>>(
       stream: bloc.hubunganList,
@@ -142,42 +174,24 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
     );
   }
 
-  Widget buttonWidget(AktivasiAkunBloc bloc) {
-    return StreamBuilder<bool>(
-      stream: bloc.buttonStep2,
-      builder: (context, snapshot) {
-        final isValid = snapshot.data ?? false;
-        return ButtonWidget(
-          title: 'Lanjut',
-          color: isValid ? null : HexColor('#ADB3BC'),
-          onPressed: () {
-            if (isValid) {
-              bloc.step.add(3);
-            }
-          },
-        );
-      },
-    );
-  }
-
-  Widget formNoHandphonePasangan(AktivasiAkunBloc bloc) {
+  Widget formNoHandphoneKontakDarurat(AktivasiAkunBloc bloc) {
     return Stack(
       children: [
         TextF(
-          controller: noHandphonePasanganController,
+          controller: noHandphoneKontakDaruratController,
           hintText: 'Contoh: 081234567890',
           hint: 'Nomor Handphone',
           onChanged: (value) {
             if (value.length < 1) {
               setState(() {
-                errorNoHandphonePasangan = 'Nomor handphone tidak valid';
+                errorNoHandphoneKontakDarurat = 'Nomor handphone tidak valid';
               });
-              bloc.noHandphonePasangan.add(null);
+              bloc.noHandphoneKontakDarurat.add(null);
             } else {
               setState(() {
-                errorNoHandphonePasangan = null;
+                errorNoHandphoneKontakDarurat = null;
               });
-              bloc.noHandphonePasangan.add(value);
+              bloc.noHandphoneKontakDarurat.add(value);
             }
           },
           validator: (String? value) {
@@ -187,39 +201,7 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
             return null;
           },
         ),
-        ErrorText(error: errorNoHandphonePasangan),
-      ],
-    );
-  }
-
-  Widget formNoKtpPasangan(AktivasiAkunBloc bloc) {
-    return Stack(
-      children: [
-        TextF(
-          controller: noKtpPasanganController,
-          hintText: 'Contoh: 1123465768123456',
-          hint: 'Nomor KTP',
-          onChanged: (value) {
-            if (value.length < 1) {
-              setState(() {
-                errorNoKtpPasangan = 'Nomor KTP tidak valid';
-              });
-              bloc.noKtpPasangan.add(null);
-            } else {
-              setState(() {
-                errorNoKtpPasangan = null;
-              });
-              bloc.noKtpPasangan.add(value);
-            }
-          },
-          validator: (String? value) {
-            if (value!.length < 1) {
-              return '';
-            }
-            return null;
-          },
-        ),
-        ErrorText(error: errorNoKtpPasangan),
+        ErrorText(error: errorNoHandphoneKontakDarurat),
       ],
     );
   }
@@ -256,24 +238,56 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
     );
   }
 
-  Widget formNoHandphoneKontakDarurat(AktivasiAkunBloc bloc) {
+  Widget formNoKtpPasangan(AktivasiAkunBloc bloc) {
     return Stack(
       children: [
         TextF(
-          controller: noHandphoneKontakDaruratController,
+          controller: noKtpPasanganController,
+          hintText: 'Contoh: 1123465768123456',
+          hint: 'Nomor KTP',
+          onChanged: (value) {
+            if (value.length < 1) {
+              setState(() {
+                errorNoKtpPasangan = 'Nomor KTP tidak valid';
+              });
+              bloc.noKtpPasangan.add(null);
+            } else {
+              setState(() {
+                errorNoKtpPasangan = null;
+              });
+              bloc.noKtpPasangan.add(value);
+            }
+          },
+          validator: (String? value) {
+            if (value!.length < 1) {
+              return '';
+            }
+            return null;
+          },
+        ),
+        ErrorText(error: errorNoKtpPasangan),
+      ],
+    );
+  }
+
+  Widget formNoHandphonePasangan(AktivasiAkunBloc bloc) {
+    return Stack(
+      children: [
+        TextF(
+          controller: noHandphonePasanganController,
           hintText: 'Contoh: 081234567890',
           hint: 'Nomor Handphone',
           onChanged: (value) {
             if (value.length < 1) {
               setState(() {
-                errorNoHandphoneKontakDarurat = 'Nomor handphone tidak valid';
+                errorNoHandphonePasangan = 'Nomor handphone tidak valid';
               });
-              bloc.noHandphoneKontakDarurat.add(null);
+              bloc.noHandphonePasangan.add(null);
             } else {
               setState(() {
-                errorNoHandphoneKontakDarurat = null;
+                errorNoHandphonePasangan = null;
               });
-              bloc.noHandphoneKontakDarurat.add(value);
+              bloc.noHandphonePasangan.add(value);
             }
           },
           validator: (String? value) {
@@ -283,40 +297,26 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
             return null;
           },
         ),
-        ErrorText(error: errorNoHandphoneKontakDarurat),
+        ErrorText(error: errorNoHandphonePasangan),
       ],
     );
   }
 
-  Widget formNamaLengkapKontakDarurat(AktivasiAkunBloc bloc) {
-    return Stack(
-      children: [
-        TextF(
-          controller: namaLengkapKontakDaruratController,
-          hintText: 'Contoh: Siti',
-          hint: 'Nama Lengkap',
-          onChanged: (value) {
-            if (value.length < 1) {
-              setState(() {
-                errorNamaLengkapKontakDarurat = 'Nama lengkap tidak valid';
-              });
-              bloc.namaLengkapKontakDarurat.add(null);
-            } else {
-              setState(() {
-                errorNamaLengkapKontakDarurat = null;
-              });
-              bloc.namaLengkapKontakDarurat.add(value);
+  Widget buttonWidget(AktivasiAkunBloc bloc) {
+    return StreamBuilder<bool>(
+      stream: bloc.buttonStep2,
+      builder: (context, snapshot) {
+        final isValid = snapshot.data ?? false;
+        return ButtonWidget(
+          title: 'Lanjut',
+          color: isValid ? null : HexColor('#ADB3BC'),
+          onPressed: () {
+            if (isValid) {
+              bloc.step.add(3);
             }
           },
-          validator: (String? value) {
-            if (value!.length < 1) {
-              return '';
-            }
-            return null;
-          },
-        ),
-        ErrorText(error: errorNamaLengkapKontakDarurat),
-      ],
+        );
+      },
     );
   }
 }

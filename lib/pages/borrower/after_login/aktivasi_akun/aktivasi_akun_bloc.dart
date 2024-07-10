@@ -171,7 +171,6 @@ class AktivasiAkunBloc extends DisposeCallbackBaseBloc {
     );
 
     //step 2
-
     final namaLengkapKontakDarurat = BehaviorSubject<String?>();
     final hubunganKontakDarurat = BehaviorSubject<Map<String, dynamic>?>();
     final noHandphoneKontakDarurat = BehaviorSubject<String?>();
@@ -179,6 +178,26 @@ class AktivasiAkunBloc extends DisposeCallbackBaseBloc {
     final noKtpPasangan = BehaviorSubject<String?>();
     final noHandphonePasangan = BehaviorSubject<String?>();
     final buttonStep2 = BehaviorSubject<bool>.seeded(false);
+    buttonStep2.addStream(
+      Rx.combineLatest2(
+        Rx.combineLatest3(
+          namaLengkapKontakDarurat.stream,
+          hubunganKontakDarurat.stream,
+          noHandphoneKontakDarurat.stream,
+          (a, b, c) {
+            return a != null && b != null && c != null;
+          },
+        ),
+        Rx.combineLatest3(
+            namaLengkapPasangan.stream, noKtpPasangan.stream, noHandphonePasangan.stream,
+            (a, b, c) {
+          return a != null && b != null && c != null;
+        }),
+        (bool a, bool b) {
+          return a == true && b == true;
+        },
+      ).shareValueSeeded(false),
+    );
 
     //step 3
     final namaBank = BehaviorSubject<Map<String, dynamic>?>();
