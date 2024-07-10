@@ -296,7 +296,7 @@ class _HomePageAfterLoginState extends State<HomePageAfterLogin>
           );
         },
         isStatus: data['konfirmasi_survey']['isStatus'],
-        jenisKendaraan: data['konfirmasi_survey']['idJenisKendaraan'],
+        jenisKendaraan: data['konfirmasi_survey']['idJenisKendaraan'] ?? 0,
       );
     }
     return const SizedBox.shrink();

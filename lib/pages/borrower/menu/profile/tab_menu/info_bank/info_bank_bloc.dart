@@ -64,7 +64,7 @@ class InformasiBankBloc extends DisposeCallbackBaseBloc {
           },
           ifRight: (value) {
             if (value.data != null) {
-              bankBorrower.add(value.data);
+              bankBorrower.add(value.data[0]);
             } else {
               bankBorrower.addError(
                 'Mohon maaf saat ini anda tidak memiliki akun bank yang terdaftar di aplikasi Danain!',
@@ -223,7 +223,7 @@ class InfoBankBloc {
           .add(response.isNotEmpty ? response[0]['id_rekening'] ?? 0 : 0);
       anRek.sink.add(response[0]['an_rekening'] ?? response[0]['anrekening']);
       noRek.sink.add(response[0]['no_rekening'] ?? response[0]['norekening']);
-      kotaBank.sink.add(response[0]['kota_bank'] ?? response[0]['kotabank']);
+      kotaBank.sink.add(response[0]['kota_bank'] ?? "");
 
       final responseBank = await _apiService.getMaster('bank', null);
       if (responseBank.statusCode == 200) {
