@@ -80,7 +80,7 @@ class _MenusWidgetState extends State<MenusWidget> {
               //   }
               //   return;
               // }
-              if (status['bank'] == false) {
+              if (status['bank'] == true) {
                 showHasnotBanBorrowerAlert(context);
                 return;
               }
