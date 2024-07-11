@@ -108,11 +108,6 @@ class _NewDetailPendanaanPageState extends State<NewDetailPendanaanPage>
   }
 
   Stream<void> handleMessageCheckSaldo(message) async* {
-    final bloc = BlocProvider.of<NewDetailPendanaanBloc>(context);
-    if (message is PendanaanSuccess) {
-      bloc.stepControl(2);
-    }
-
     if (message is PendanaanError) {
       await showModalBottomSheet(
         context: context,
@@ -124,6 +119,12 @@ class _NewDetailPendanaanPageState extends State<NewDetailPendanaanPage>
         ),
         builder: (context) => balanceNotSufficient(context),
       );
+    }
+
+    final bloc = BlocProvider.of<NewDetailPendanaanBloc>(context);
+    if (message is PendanaanSuccess) {
+      bloc.reqOtpSubmit();
+      bloc.stepControl(2);
     }
   }
 }

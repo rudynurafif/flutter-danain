@@ -171,7 +171,6 @@ class NewDetailPendanaanBloc extends DisposeCallbackBaseBloc {
       final saldo = summary['saldoTersedia'];
       if (saldo < valuePinjam) {
         messageCheckSaldo.add(const PendanaanError('Saldo Tidak Cukup', []));
-        print('masuk');
       } else {
         messageCheckSaldo.add(const PendanaanSuccess());
       }

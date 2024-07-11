@@ -67,7 +67,9 @@ class PembayaranWidget extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
                 TextWidget(
-                  text: rupiahFormat(nominal),
+                  text: isLast
+                      ? rupiahFormat(pokokDana + nominal)
+                      : rupiahFormat(nominal), // info dari BE diminta nambah sendiri di depannya
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: const Color(0xff111827),
@@ -165,7 +167,9 @@ class PembayaranWidget extends StatelessWidget {
           const SpacerV(),
           KeyValGeneralMedium(
             title: 'Total',
-            value: rupiahFormat(total),
+            value: isLast
+                ? rupiahFormat(pokokDana + bunga + denda)
+                : rupiahFormat(bunga + denda), // info dari BE disuruh nambah sendiri di depannya
           ),
           if (isStatus == 2)
             const Column(

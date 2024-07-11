@@ -185,7 +185,6 @@ class _ModalKonfirmasiPendanaanState extends State<ModalKonfirmasiPendanaan> {
                               // Sementara
                               if (dataBeranda['status']['Aktivasi'] == 1) {
                                 bloc.checkSaldoFunction(widget.pendanaan['detail']['pokokHutang']);
-                                bloc.reqOtpSubmit();
                                 Navigator.pop(context);
                               }
                               if (dataBeranda['status']['Aktivasi'] == 0) {

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_danain/pages/lender/home/home_page.dart';
 import 'package:flutter_danain/pages/lender/new_pendanaan/components/validasi_pendanaan_lender.dart';
 import 'package:flutter_danain/pages/lender/rdl/regis_rdl_page.dart';
 import 'package:flutter_danain/pages/lender/verifikasi/verifikasi_page.dart';
 import 'package:flutter_danain/widgets/widget_element.dart';
 
 import '../../../borrower/home/home_page.dart';
+import '../../setor_dana/setor_dana_page.dart';
 
 Widget notVerifiedPopUp(BuildContext context) {
   return ModalValidasiPendanaan(
@@ -41,7 +43,7 @@ Widget waitingVerifiedPopUp(BuildContext context) {
     textButton: 'Kembali ke Beranda',
     icon: 'assets/lender/pendanaan/warning.svg',
     action1: () {
-      Navigator.popAndPushNamed(context, HomePage.routeName);
+      Navigator.popAndPushNamed(context, HomePageLender.routeNeme);
     },
   );
 }
@@ -62,7 +64,7 @@ Widget balanceNotSufficient(BuildContext context) {
     textButton: 'Setor Dana',
     icon: 'assets/lender/pendanaan/setordana.svg',
     action1: () {
-      Navigator.popAndPushNamed(context, HomePage.routeName);
+      Navigator.popAndPushNamed(context, SetorDanaLenderPage.routeName);
     },
   );
 }
