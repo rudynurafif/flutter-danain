@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_danain/component/home/action_modal_component.dart';
+import 'package:flutter_danain/pages/borrower/after_login/aktivasi_akun/aktivasi.dart';
 import 'package:flutter_danain/pages/borrower/after_login/mitra/mitra_page.dart';
 import 'package:flutter_danain/pages/borrower/product/cash_drive/simulasi/simulasi_page.dart';
 import 'package:flutter_danain/widgets/widget_element.dart';
@@ -115,30 +116,31 @@ class _MenusWidgetState extends State<MenusWidget> {
           ),
           GestureDetector(
             onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return ModalPopUpNoClose(
-                    icon: 'assets/images/icons/product.svg',
-                    title: 'Nantikan yang Baru di Danain',
-                    message:
-                        'Danain sedang mempersiapkan sesuatu yang baru. Nantikan dan nikmati layanan terbaik kami',
-                    sizeIcon: 80,
-                    actions: [
-                      ButtonWidget(
-                        paddingY: 7,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        title: 'OK',
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
+              // showDialog(
+              //   context: context,
+              //   builder: (context) {
+              //     return ModalPopUpNoClose(
+              //       icon: 'assets/images/icons/product.svg',
+              //       title: 'Nantikan yang Baru di Danain',
+              //       message:
+              //           'Danain sedang mempersiapkan sesuatu yang baru. Nantikan dan nikmati layanan terbaik kami',
+              //       sizeIcon: 80,
+              //       actions: [
+              //         ButtonWidget(
+              //           paddingY: 7,
+              //           fontSize: 12,
+              //           fontWeight: FontWeight.w500,
+              //           title: 'OK',
+              //           onPressed: () {
+              //             Navigator.pop(context);
+              //           },
+              //         ),
+              //       ],
+              //     );
+              //   },
+              // );
               // Navigator.pushNamed(context, InfoProduct.routeName);
+              Navigator.pushNamed(context, AktivasiPage.routeName);
             },
             child: MenuItem(
               context: context,

@@ -129,8 +129,8 @@ class _AktivasiPageState extends State<AktivasiPage> {
   Widget build(BuildContext context) {
     final bloc = context.bloc<AktivasiAkunBloc>();
     final listWidget = [
-      Step1Aktivasi(aktivasiBloc: bloc),
       Step2Aktivasi(aktivasiBloc: bloc),
+      Step1Aktivasi(aktivasiBloc: bloc),
       Step3Aktivasi(aktivasiBloc: bloc),
     ];
     return StreamBuilder<int>(
