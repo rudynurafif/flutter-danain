@@ -20,6 +20,7 @@ class DetailTransaksiBlocV3 extends DisposeCallbackBaseBloc {
   final Function0<void> getMasterBank;
   final Function0<void> getDocumentPerjanjian;
   final Function1<Map<String, dynamic>, void> resultChange;
+  final Function1<int, void> getBayarPayment;
 
   final Stream<Map<String, dynamic>> caraBayarStream;
   final Stream<Map<String, dynamic>> resultValidate;
@@ -28,10 +29,12 @@ class DetailTransaksiBlocV3 extends DisposeCallbackBaseBloc {
   final Stream<String?> errorMessage;
 
   final BehaviorSubject<Map<String, dynamic>?> response;
+  final BehaviorSubject<Map<String, dynamic>> responseVa;
 
   DetailTransaksiBlocV3._({
     required this.getRiwayatTransaksi,
     required this.response,
+    required this.responseVa,
     required this.stepChange,
     required this.stepStream$,
     required this.idAgreementChange,
@@ -43,6 +46,7 @@ class DetailTransaksiBlocV3 extends DisposeCallbackBaseBloc {
     required this.getDocumentPerjanjian,
     required this.documentPerjanjian,
     required this.errorMessage,
+    required this.getBayarPayment,
   }) : super(dispose);
 
   factory DetailTransaksiBlocV3(
@@ -53,10 +57,12 @@ class DetailTransaksiBlocV3 extends DisposeCallbackBaseBloc {
     //get token
     final errorMessage = BehaviorSubject<String?>();
     final responseController = BehaviorSubject<Map<String, dynamic>?>();
+    final responseVAController = BehaviorSubject<Map<String, dynamic>>();
     final authenticationState$ = getAuthStateStreamUseCase();
     final idAgreementController = BehaviorSubject<int?>();
     final caraBayarController = BehaviorSubject<Map<String, dynamic>>();
     final documentPerjanjianController = BehaviorSubject<dynamic>();
+    final resultValidate = BehaviorSubject<Map<String, dynamic>>();
 
     Future<void> getRiwayatTransaksi(int idAgreement) async {
       try {
@@ -86,6 +92,34 @@ class DetailTransaksiBlocV3 extends DisposeCallbackBaseBloc {
       }
     }
 
+    Future<void> getBayarPayment(int noUrut) async {
+      try {
+        final event = await authenticationState$.first;
+        final response = await getRiwayatTransaksiUseCase.call(
+          endpoint: '/api/beeborrowertransaksi/v1/cnd/pembayaran',
+          params: {
+            'idAgreement': responseController.value?['idAgreement'],
+            'noUrut': noUrut,
+          },
+          token: event.orNull()!.userAndToken!.token.toString(),
+        );
+        response.fold(
+          ifLeft: (error) {
+            errorMessage.add(error);
+          },
+          ifRight: (value) {
+            print('masuk right bang GET BAYAR PAYMENT${value.data}');
+            responseVAController.add(value.data);
+            caraBayarController.add(value.data['caraPembayaran']);
+            resultValidate.add(value.data);
+          },
+        );
+      } catch (e) {
+        print('masuk error bang bang ${e.toString()}');
+        errorMessage.add(e.toString());
+      }
+    }
+
     final ApiService apiService = ApiService(
       SimpleHttpClient(
         client: Platform.isIOS || Platform.isMacOS
@@ -93,7 +127,6 @@ class DetailTransaksiBlocV3 extends DisposeCallbackBaseBloc {
             : http.Client(),
       ),
     );
-    final resultValidate = BehaviorSubject<Map<String, dynamic>>();
 
     void getMasterBank() async {
       final response = await apiService.getMasterCaraBayar('BNI');
@@ -108,7 +141,6 @@ class DetailTransaksiBlocV3 extends DisposeCallbackBaseBloc {
 
         result[jenisPembayaran].add(keterangan);
       }
-      caraBayarController.add(result);
     }
 
     void getDocumentPerjanjian() async {
@@ -149,6 +181,7 @@ class DetailTransaksiBlocV3 extends DisposeCallbackBaseBloc {
           authState$.connect(),
         ]).dispose,
         response: responseController,
+        responseVa: responseVAController,
         stepChange: (int val) => stepController.add(val),
         getMasterBank: getMasterBank,
         stepStream$: stepController.stream,
@@ -158,6 +191,7 @@ class DetailTransaksiBlocV3 extends DisposeCallbackBaseBloc {
         resultValidate: resultValidate.stream,
         getDocumentPerjanjian: getDocumentPerjanjian,
         documentPerjanjian: documentPerjanjianController,
+        getBayarPayment: getBayarPayment,
         errorMessage: errorMessage.stream);
   }
 }
