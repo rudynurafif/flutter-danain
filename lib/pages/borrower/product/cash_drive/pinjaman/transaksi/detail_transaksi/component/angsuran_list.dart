@@ -484,7 +484,9 @@ class _AngsuranListV3PageState extends State<AngsuranListV3Page> {
       return Button1(
         btntext: "Bayar",
         action: () {
-          // Call Navigator in the context of the current screen
+          widget.transaksiBloc.getBayarPayment(data['noUrut']);
+          // Call Navigator in the context
+          //of the current screen
           Navigator.push(
             context,
             MaterialPageRoute(

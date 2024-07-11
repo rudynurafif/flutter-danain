@@ -32,85 +32,98 @@ class _StepBayarDetailTransaksiState extends State<StepBayarDetailTransaksi> {
   @override
   Widget build(BuildContext context) {
     final bloc = widget.transaksiBloc;
-    return Scaffold(
-      appBar: previousTitleCustom(
-        context,
-        'Pembayaran',
-        () => Navigator.pushNamedAndRemoveUntil(
-          context,
-          HomePage.routeName,
-          (route) => false,
-        ),
-      ),
-      body: SizedBox(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 24, right: 24, top: 24),
-                child: Headline2500(text: 'Pembayaran Angsuran Pertama'),
+    return StreamBuilder<Map<String, dynamic>>(
+      stream: bloc.responseVa,
+      builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData) {
+          return Center(child: Text('No data available'));
+        } else {
+          return Scaffold(
+            appBar: previousTitleCustom(
+              context,
+              'Pembayaran',
+              () => Navigator.pushNamedAndRemoveUntil(
+                context,
+                HomePage.routeName,
+                (route) => false,
               ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: subtitle(bloc),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
+            ),
+            body: SizedBox(
+              child: SingleChildScrollView(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SvgPicture.asset('assets/lender/bank/bni.svg'),
-                    const SizedBox(width: 12),
-                    const Subtitle2Extra(text: 'BNI')
+                    const Padding(
+                      padding: EdgeInsets.only(left: 24, right: 24, top: 24),
+                      child: Headline2500(text: 'Pembayaran Angsuran Pertama'),
+                    ),
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: subtitle(bloc),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset('assets/lender/bank/bni.svg'),
+                          const SizedBox(width: 12),
+                          const Subtitle2Extra(text: 'BNI')
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: virtualAccount(bloc),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: totalPembayaran(bloc),
+                    ),
+                    const SizedBox(height: 8),
+                    dividerFull(context),
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: caraBayarWidget(bloc),
+                    ),
+                    dividerFull(context),
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Button1(
+                        btntext: 'Kembali',
+                        action: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            HomePage.routeName,
+                            arguments: const HomePage(
+                              index: 1,
+                              subIndex: 1,
+                            ),
+                            (route) => false,
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: virtualAccount(bloc),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: totalPembayaran(bloc),
-              ),
-              const SizedBox(height: 8),
-              dividerFull(context),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: caraBayarWidget(bloc),
-              ),
-              dividerFull(context),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Button1(
-                  btntext: 'Kembali',
-                  action: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      HomePage.routeName,
-                      arguments: const HomePage(
-                        index: 1,
-                        subIndex: 1,
-                      ),
-                      (route) => false,
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 24),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -131,7 +144,7 @@ class _StepBayarDetailTransaksiState extends State<StepBayarDetailTransaksi> {
                 ),
               ),
               TextSpan(
-                text: formatDateFull(widget.data['tglJt']),
+                text: formatDateFull(data['expiredAt']),
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 12,
@@ -189,7 +202,7 @@ class _StepBayarDetailTransaksiState extends State<StepBayarDetailTransaksi> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Headline2500(text: "19191919"),
+                  Headline2500(text: data['dataVa']['virtual_account']),
                   GestureDetector(
                     onTap: () {
                       BuildContext? dialogContext;
@@ -334,6 +347,7 @@ class _StepBayarDetailTransaksiState extends State<StepBayarDetailTransaksi> {
     return StreamBuilder<Map<String, dynamic>>(
       stream: bloc.resultValidate,
       builder: (context, snapshot) {
+        final data = snapshot.data!;
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Loading state
           // return const Center(
@@ -352,13 +366,11 @@ class _StepBayarDetailTransaksiState extends State<StepBayarDetailTransaksi> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Headline2500(
-                      text: rupiahFormat(widget.data['totalPembayaran'])),
+                  Headline2500(text: rupiahFormat(data['angsuran'])),
                   GestureDetector(
                     onTap: () {
                       BuildContext? dialogContext;
-                      Clipboard.setData(
-                          ClipboardData(text: widget.data['totalPembayaran']));
+                      Clipboard.setData(ClipboardData(text: data['angsuran']));
                       showDialog(
                         context: context,
                         builder: (context) {
@@ -415,7 +427,7 @@ class _StepBayarDetailTransaksiState extends State<StepBayarDetailTransaksi> {
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.hasData) {
           final data = snapshot.data!;
-          final num total = data['totalPembayaran'];
+          final num total = data['angsuran'];
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -429,7 +441,7 @@ class _StepBayarDetailTransaksiState extends State<StepBayarDetailTransaksi> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Headline2500(text: rupiahFormat(4000000)),
+                  Headline2500(text: rupiahFormat(data['angsuran'])),
                   GestureDetector(
                     onTap: () {
                       BuildContext? dialogContext;
@@ -504,13 +516,11 @@ class _StepBayarDetailTransaksiState extends State<StepBayarDetailTransaksi> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Headline2500(
-                    text: rupiahFormat(widget.data['totalPembayaran'])),
+                Headline2500(text: rupiahFormat(data['angsuran'])),
                 GestureDetector(
                   onTap: () {
                     BuildContext? dialogContext;
-                    Clipboard.setData(
-                        ClipboardData(text: widget.data['totalPembayaran']));
+                    Clipboard.setData(ClipboardData(text: data['angsuran']));
                     showDialog(
                       context: context,
                       builder: (context) {
@@ -603,7 +613,14 @@ class _StepBayarDetailTransaksiState extends State<StepBayarDetailTransaksi> {
       children: data.asMap().entries.map((entry) {
         final index = entry.key;
         final methodName = entry.value.keys.first;
+
         final methodList = entry.value[methodName];
+        List<dynamic> steps = methodList.keys
+            .where((step) => step != methodList)
+            .map((step) => methodList[step]!)
+            .toList();
+
+        print('check list name $methodList');
         bool _expanded = _expandedMap[methodName] ?? false;
 
         return Column(
@@ -635,7 +652,7 @@ class _StepBayarDetailTransaksiState extends State<StepBayarDetailTransaksi> {
               Transform(
                 alignment: Alignment.topCenter,
                 transform: Matrix4.translationValues(0, _expanded ? 0 : 1, 0),
-                child: caraBayarDetail(context, methodList),
+                child: caraBayarDetail(context, steps),
               ),
             if (index != data.length - 1)
               Column(
