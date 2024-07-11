@@ -7,6 +7,8 @@ import 'package:flutter_danain/widgets/widget_element.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../../data/constants.dart';
+
 class CreateInfoBankPage extends StatefulWidget {
   static const routeName = '/create_bank_borrower';
 
@@ -46,6 +48,20 @@ class _CreateInfoBankPageState extends State<CreateInfoBankPage> {
     }
   }
 
+  void showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: TextWidget(
+          text: message,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
+        ),
+        backgroundColor: HexColor(borrowerColor),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isValid = isValidRekening && isValidKota && bankSelected != null;
@@ -77,6 +93,8 @@ class _CreateInfoBankPageState extends State<CreateInfoBankPage> {
                     noRek: noRekController.text,
                     namaPemilik: namaController.text,
                   );
+                  Navigator.pop(context);
+                  showSnackbar(context, 'Berhasil menambahkan data bank!');
                 }
               },
             ),

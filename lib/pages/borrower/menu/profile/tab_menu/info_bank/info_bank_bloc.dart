@@ -97,7 +97,7 @@ class InformasiBankBloc extends DisposeCallbackBaseBloc {
         final response = await postRequest.call(
           url: 'api/beeborroweruser/v1/user/update/bank',
           body: {
-            'idRekening': infoBank['id_peminjam_rekening'] ?? 0,
+            'idRekening': 0,
             'no_rekening': noRek,
             'an_rekening': namaPemilik,
             'id_bank': idBank,
