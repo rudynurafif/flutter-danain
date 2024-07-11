@@ -93,6 +93,7 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
               ),
               const SpacerV(value: 16),
               formNamaLengkapKontakDarurat(bloc),
+              const SpacerV(value: 16),
               formHubunganKontakDarurat(bloc),
               const SpacerV(value: 16),
               formNoHandphoneKontakDarurat(bloc),
@@ -109,7 +110,8 @@ class _Step2AktivasiState extends State<Step2Aktivasi> {
               const SpacerV(value: 16),
               formNoHandphonePasangan(bloc),
               const SpacerV(value: 24),
-              buttonWidget(bloc)
+              buttonWidget(bloc),
+              const SpacerV(value: 24),
             ],
           ),
         ),
